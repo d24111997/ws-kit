@@ -1,0 +1,25 @@
+name: leak-scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: pattern guard (project-leak refs)
+        run: |
+          PATTERN='ECG|Inngo|Anijob|AJJOB|cv_extract|fe_ops|fe_cv|dungpham|10\.Util_Scripts|prj [0-9]'
+          if grep -rInE "$PATTERN" --exclude-dir=.git . ; then
+            echo "::error::Forbidden leak pattern found in repo"; exit 1
+          else
+            echo "OK: no forbidden patterns"
+          fi

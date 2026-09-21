@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Obsidian — per-machine state & plugin artifacts (không commit)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.obsidian/plugins/*/main.js
+.obsidian/plugins/*/styles.css
+.trash/
+
+# Secrets
+.env
+.env.*
+*.env
+*.pem
+*.key
+credentials.json

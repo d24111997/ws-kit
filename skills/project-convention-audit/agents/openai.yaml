@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Convention Audit"
+  short_description: "Audit code by project conventions"
+  default_prompt: "Audit this repository against its own coding conventions and generate a root-level report with date and time in the filename."

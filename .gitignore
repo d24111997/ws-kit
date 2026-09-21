@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+
+# Secrets & backups — không bao giờ commit
+.secrets*
+.env
+.env.*
+*.env
+!.env.example
+*.bak
+*.headroom-backup
+*.pem
+*.key
+*.p12
+id_rsa*
+credentials.json
+
+# Obsidian (nếu repo chứa vault)
+**/.obsidian/plugins/*/data.json
+**/.obsidian/workspace*.json
+
+# Python
+.venv/
+__pycache__/
+*.log
