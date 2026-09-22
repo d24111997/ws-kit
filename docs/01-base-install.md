@@ -117,6 +117,6 @@ cd ~/<repo-bất-kỳ> && opencode
 | Tool | Version tham chiếu |
 |---|---|
 | opencode | v2 stable 2.0.x (`@opencode/cli` latest = 2.0.11) |
-| headroom | PyPI `headroom-ai` 0.37.0 |
+| headroom | PyPI `headroom-ai` ≥ 0.38 — cài kèm extra: `uv tool install "headroom-ai[proxy]"` |
 | rtk | 0.45.0 (homebrew-core) |
 | node | LTS hiện hành |
