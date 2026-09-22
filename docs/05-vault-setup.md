@@ -35,17 +35,21 @@ Vault skeleton gồm: taxonomy `00_TASKS_THIS_WEEK → 12_bug` (+ `04_Research`,
 ## 4. Bật Local REST API
 
 1. Settings → **Local REST API** → bật plugin.
-2. Giữ port mặc định **27123**.
+2. Port: plugin 5.x mặc định HTTPS **27124** (insecure 27123 mặc định tắt). Config MCP trong kit dùng `OBSIDIAN_BASE_URL=https://127.0.0.1:27124` — nếu bạn đổi port thì sửa lại cho khớp.
 3. Copy **API key**.
 
 ## 5. Thêm key vào secrets
 
 ```bash
-# trong ~/.secrets/opencode.env
+# 1) file key riêng cho MCP ({file:} — không phụ thuộc env của service, xem docs/04 §4)
+printf '%s' "<key vừa copy>" > ~/.secrets/obsidian-api-key
+chmod 600 ~/.secrets/obsidian-api-key
+
+# 2) (tuỳ chọn) export cho shell — trong ~/.secrets/opencode.env
 export OBSIDIAN_API_KEY="<key vừa copy>"
 ```
 
-Mở shell mới để env có hiệu lực (MCP server đọc env khi khởi động).
+Key riêng không cần restart service — config `{file:...}` được đọc lại khi MCP khởi động.
 
 > API key nằm ở `.obsidian/plugins/obsidian-local-rest-api/data.json` — file này **không bao giờ commit** (vault repo local; nếu push public phải chắc chắn đã ignore `.obsidian/plugins/*/data.json`).
 

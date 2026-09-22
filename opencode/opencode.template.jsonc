@@ -118,10 +118,13 @@
       "obsidian": {
         "type": "local",
         "command": ["npx", "-y", "obsidian-mcp-server"],
+        // obsidian-mcp-server 3.x dùng OBSIDIAN_BASE_URL (bỏ OBSIDIAN_HOST/OBSIDIAN_PORT).
+        // Key đọc trực tiếp từ file ({file:}) để không phụ thuộc env của process service:
+        //   echo -n "<key>" > ~/.secrets/obsidian-api-key && chmod 600 ~/.secrets/obsidian-api-key
+        // (xem docs/04-secrets.md §2, docs/05-vault-setup.md §4-5)
         "environment": {
-          "OBSIDIAN_API_KEY": "{env:OBSIDIAN_API_KEY}",
-          "OBSIDIAN_HOST": "localhost",
-          "OBSIDIAN_PORT": "27123",
+          "OBSIDIAN_API_KEY": "{file:~/.secrets/obsidian-api-key}",
+          "OBSIDIAN_BASE_URL": "https://127.0.0.1:27124",
           "OBSIDIAN_VERIFY_SSL": "false"
         },
         "codemode": false
