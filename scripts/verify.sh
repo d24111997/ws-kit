@@ -5,7 +5,7 @@
 #   ./scripts/verify.sh [--vault <path-vault>]
 #
 # Ghi chú:
-#   - Optional tools (jq/lazygit/colima...) không có → SKIP, không tính FAIL.
+#   - Optional tools (jq/lazygit/colima/tmux...) không có → SKIP, không tính FAIL.
 #   - chrome-devtools cần Google Chrome → thiếu thì WARN, không FAIL toàn bộ.
 set -uo pipefail
 
@@ -121,12 +121,20 @@ if [ -n "$VAULT" ]; then
   else
     bad "vault thiếu AGENTS.md/_templates: $VAULT"
   fi
+  if [ -d "$VAULT/.git" ]; then ok "vault là git repo (local-only)"; else warn "vault chưa init git → xem scripts/new-vault.sh"; fi
 else
   skip "vault check (truyền --vault <path> để kiểm tra)"
 fi
 
+echo "── git repo local (config/skills) ────────────────────"
+for p in "$HOME/.config/opencode" "$HOME/Documents/21.AgentSkills"; do
+  if [ ! -d "$p" ]; then skip "repo local: $p (chưa tồn tại)"
+  elif [ -d "$p/.git" ]; then ok "repo local: $p"
+  else warn "chưa init repo: $p → chạy scripts/bootstrap-macos.sh"; fi
+done
+
 echo "── optional tools ────────────────────────────────────"
-for t in jq lazygit colima; do
+for t in jq lazygit colima tmux; do
   if command -v "$t" >/dev/null 2>&1; then ok "optional: $t"; else skip "optional: $t"; fi
 done
 

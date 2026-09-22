@@ -9,6 +9,11 @@
 - Tất cả repo nằm trong 1 workspace chung (ví dụ `~/Documents/<workspace>/`) theo pattern `NN.<tên-repo>` (NN = số thứ tự 2 chữ số).
 - Mỗi repo là một git repo độc lập, có `AGENTS.md` riêng ở root.
 - Vault (Obsidian) nằm riêng ở `~/Documents/<Tên-vault>/`.
+- **Git repo local-only** (không remote — sinh tự động khi setup):
+  - `~/.config/opencode` — config (bootstrap `git init` + commit đầu)
+  - `<skills-path>` (mặc định `~/Documents/21.AgentSkills`) — skills (bootstrap `git init`)
+  - `~/Documents/<Tên-vault>` — vault (`new-vault.sh` tự `git init`)
+  - Muốn backup → tự thêm remote private (không bắt buộc).
 
 ## 2. Worktree
 
@@ -58,3 +63,15 @@ Mỗi repo có bộ tài liệu riêng:
 6. **Handover** — `docs/handover/HANDOVER_N_*.md` khi kết thúc session.
 
 > Các bước trên được hỗ trợ bởi bộ agents/commands/skills trong `ws-kit` (jack, planner, developer, ... — xem `docs/03-opencode-config.md`).
+
+---
+
+## 7. Git đa repo — lazygit + tmux
+
+Quản lý git nhiều repo cùng lúc bằng **một tmux session duy nhất** — mỗi repo một window chạy `lazygit`:
+
+- `opencode` chạy riêng (terminal/tab khác) — tmux session này **chỉ để quản lý git**.
+- Helper: [`snippets/zsh-ws.zsh`](../snippets/zsh-ws.zsh) → copy vào `~/.zshrc`, sửa `WS_REPOS` theo máy:
+  - `lgall` — tạo/attach session `repos` (mỗi repo 1 window, lazygit)
+  - `wsst` — status nhanh tất cả repo
+- Cài: `brew install tmux lazygit` (P1 — xem `docs/01-base-install.md`).

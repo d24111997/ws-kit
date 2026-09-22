@@ -34,7 +34,7 @@ brew install --cask google-chrome        # cần cho MCP chrome-devtools
 
 # Optional (verify.sh: có → check, không có → SKIP, KHÔNG tính FAIL)
 brew install jq                           # tiện dụng cho scripts/JSON
-brew install lazygit                      # git TUI
+brew install tmux lazygit                 # git workflow đa repo — xem docs/00 §7
 brew install colima docker docker-compose # container runtime (hoặc Docker Desktop / OrbStack — chọn 1)
 # rustup                                  # nếu làm việc với dự án Rust
 ```
@@ -71,7 +71,7 @@ cd ~/ws-kit
 ./scripts/bootstrap-macos.sh            # flags: --skills-path, --target-dir, --dry-run
 ```
 
-Bootstrap sẽ: backup `~/.config/opencode` cũ (nếu có) → copy config v2-native + agents/commands/plugins → cài 25 skills vào `~/Documents/21.AgentSkills` → `npm install` deps cho plugin local.
+Bootstrap sẽ: backup `~/.config/opencode` cũ (nếu có) → copy config v2-native + agents/commands/plugins → cài 25 skills vào `~/Documents/21.AgentSkills` → `npm install` deps cho plugin local → `git init` + commit đầu cho `~/.config/opencode` và skills path (**repo local-only**, không cấu hình remote — xem docs/00 §1).
 
 ## P5 — Secrets + account
 
