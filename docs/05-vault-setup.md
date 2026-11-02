@@ -73,3 +73,18 @@ git add -A && git commit -m "setup: vault + plugins"
 - MCP obsidian trong config giữ đúng như máy nguồn: `npx -y obsidian-mcp-server` + env `OBSIDIAN_HOST=localhost`, `OBSIDIAN_PORT=27123`, `OBSIDIAN_VERIFY_SSL=false`.
 - Vault mới = **cấu trúc + template**, không có nội dung dự án cũ. Bắt đầu bằng cách điền `01_Project/` + `_Index.md` theo hệ thống của bạn.
 - `.obsidian/` trong template đã loại: `workspace.json`, `graph.json`, hotkeys, plugin code, data.json (API key).
+
+## 8. Mở một repo đã có như vault (docs repo)
+
+Với repo tài liệu đã tồn tại (không tạo vault mới từ skeleton):
+
+1. Obsidian → **Open folder as vault** → chọn thư mục repo.
+2. Cài **`dataview`** (bắt buộc nếu repo có dashboard `.md` dùng `dataviewjs`); **`obsidian-meta-bind-plugin`** chỉ cần khi muốn ô chọn filter.
+3. Thêm vào `.gitignore` của repo:
+   ```gitignore
+   .obsidian/
+   ```
+   Cấu hình vault là của từng máy; chỉ commit nội dung note và dashboard.
+4. Dashboard của repo đọc **frontmatter** của từng file, không đọc file index sửa tay. Quy ước trường (ví dụ `id`, `status`, `status_note`, `area`, `updated`) do repo đó khai trong README của nó — dashboard chỉ là lớp xem.
+
+> Nếu repo đã có `.obsidian/` untracked từ trước, kiểm `git status` để chắc nó không bị commit.
