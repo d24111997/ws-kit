@@ -116,6 +116,9 @@
   "mcp": {
     "servers": {
       "obsidian": {
+        // Kit không dùng MCP Obsidian: agent đọc/ghi vault bằng filesystem.
+        // Bật (xoá "disabled") nếu bạn vẫn muốn agent truy cập vault qua MCP.
+        "disabled": true,
         "type": "local",
         "command": ["npx", "-y", "obsidian-mcp-server"],
         // obsidian-mcp-server 3.x dùng OBSIDIAN_BASE_URL (bỏ OBSIDIAN_HOST/OBSIDIAN_PORT).

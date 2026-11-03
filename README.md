@@ -10,8 +10,8 @@
 | Thành phần | Nội dung |
 |---|---|
 | **opencode v2 config** | `opencode.jsonc` v2-native: providers (openrouter/commandcode/headroom/opencode-go), MCP servers, permissions, model variants |
-| **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 15 commands |
-| **Skills** | 25 skill tự viết (collect-context-*, discuss-custom, plan-custom, test-driven-development, ...) |
+| **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 13 commands |
+| **Skills** | 23 skill tự viết (collect-context-*, discuss-custom, plan-custom, test-driven-development, ...) |
 | **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
 | **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + tmux/lazygit (git đa repo) |
 | **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |
@@ -88,7 +88,7 @@ ws-kit/
 │  ├─ AGENTS.md                 # hướng dẫn global (bản sạch)
 │  ├─ package.json              # dependency @opencode/plugin (cho plugin local)
 │  ├─ agents/                   # 11 agents + references/ (3 checklist)
-│  ├─ commands/                 # 15 commands
+│  ├─ commands/                 # 13 commands
 │  └─ plugins/                  # rtk.ts + serena-reminder.ts (v2-native)
 ├─ skills/                  # 25 skills → cài vào ~/Documents/21.AgentSkills
 ├─ vault-template/          # skeleton vault → new-vault.sh copy ra ~/Documents

@@ -58,6 +58,12 @@
 - [ ] Chạy thử `/collect-context` hoặc `/plan-custom` → OK
 - [ ] (Optional) Thêm block rtk-instructions vào `~/.config/opencode/AGENTS.md` — snippet tại `docs/02-headroom.md §4`
 
+## Giữ kit đồng bộ (định kỳ)
+
+- [ ] Sau khi sửa agent/skill trên máy: `./scripts/capture.sh` (dry-run) → `--apply`
+- [ ] Review `git diff --stat` trong kit rồi commit — không để drift 2 tháng
+- [ ] Skill cá nhân không muốn lên kit: thêm tên vào `.kitignore`
+
 ## Git workflow đa repo (khuyến nghị)
 
 - [ ] Đã copy `snippets/zsh-ws.zsh` vào `~/.zshrc` + sửa `WS_REPOS`

@@ -414,7 +414,6 @@ Skills có sẵn trong các path khai ở mảng `skills` trong config. Dùng `s
 | UI work | frontend-ui-engineering |
 | Security | security-and-hardening |
 | Performance | performance-optimization |
-| Refactor / simplify | code-simplification |
 
 ## Subagent System
 
