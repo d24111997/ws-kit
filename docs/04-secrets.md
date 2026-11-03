@@ -28,6 +28,15 @@ export COMMANDCODE_API_KEY="<điền>"
 export OBSIDIAN_API_KEY="<điền sau khi cài plugin Local REST API>"
 ```
 
+Sau khi lấy key từ plugin Local REST API (docs/05 §5), tạo thêm file key riêng cho MCP:
+
+```bash
+printf '%s' "<key>" > ~/.secrets/obsidian-api-key
+chmod 600 ~/.secrets/obsidian-api-key
+```
+
+**Vì sao cần file riêng:** `{env:...}` chỉ resolve từ env của **process opencode service** — service có thể được macOS spawn với env mặc định (không source `~/.zshenv`), khiến MCP server nhận key rỗng và fail `Connection closed` dù shell của bạn có biến. Config kit vì vậy dùng `{file:~/.secrets/obsidian-api-key}` cho MCP obsidian.
+
 Nạp tự động — thêm vào `~/.zshenv`:
 
 ```bash
@@ -47,6 +56,7 @@ Một số provider đến từ **subscription account** chứ không phải API
 ## 4. Nguyên tắc
 
 - **KHÔNG** để secret trong `opencode.jsonc`, không commit `~/.secrets/*`, không commit `*.env`.
-- `{file:...}` **không được hỗ trợ** trong docs v2 → dùng `{env:...}` (kit đã chọn cách này).
+- `{env:...}` resolve từ env của process chạy opencode (service) — **không phải** env của shell bạn; nếu biến không có trong service, giá trị thành chuỗi rỗng.
+- `{file:path}` **được hỗ trợ** trong config v2 (nội dung file được thay vào chỗ `{file:...}`) — dùng cho key mà MCP server phải đọc (vd `~/.secrets/obsidian-api-key`).
 - GitHub: không dùng PAT trong config — dùng `gh auth login` / OAuth của MCP remote nếu cần.
 - Trước khi push repo có config: quét `gitleaks detect` + grep `grep -rn "sk-\|ghp_\|github_pat" .`

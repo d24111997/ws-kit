@@ -42,6 +42,16 @@ headroom install restart        # hoặc: headroom install apply --providers man
 curl -s http://127.0.0.1:8787/health
 ```
 
+### chrome-devtools MCP "connected" nhưng tool báo `Could not find DevToolsActivePort`
+
+`--autoConnect` (Chrome 144+) cần remote debugging server bật ngay trong Chrome:
+
+1. Mở `chrome://inspect/#remote-debugging` trong Chrome.
+2. Bật **Enable remote debugging**.
+3. Gọi lại tool (vd `list_pages`) — không cần restart opencode.
+
+Nếu không bật được toggle, chạy MCP không kèm `--autoConnect` để nó tự mở Chrome riêng (profile sạch).
+
 ### Plugin local không load (rtk / serena-reminder)
 
 - Kiểm tra `opencode plugin list` có `rtk`/`serena` không.

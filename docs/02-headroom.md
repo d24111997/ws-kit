@@ -8,7 +8,11 @@
 ## 1. Cài đặt
 
 ```bash
-uv tool install headroom-ai
+uv tool install "headroom-ai[proxy]"
+#   ^ headroom-ai >= 0.38 tách proxy deps vào extra [proxy].
+#     Thiếu extra → proxy không start được:
+#       "Error: Proxy dependencies not installed. Run: pip install headroom-ai[proxy]"
+#     và `headroom install apply` báo: Deployment 'default' did not become ready after start.
 ```
 
 ## 2. Deploy daemon (BẮT BUỘC đúng cách)

@@ -7,6 +7,8 @@
 # Mặc định:
 #   --target-dir   ~/.config/opencode        (backup rename nếu đã tồn tại)
 #   --skills-path  ~/Documents/21.AgentSkills (backup-copy trước khi merge)
+#
+# Sau khi copy: init git repo local (local-only) cho config + skills — bỏ qua nếu đã là repo.
 set -euo pipefail
 
 KIT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -38,6 +40,31 @@ done
 say()  { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[!]\033[0m %s\n' "$*"; }
 run()  { if [ "$DRY_RUN" = 1 ]; then printf '  [dry-run] %s\n' "$*"; else "$@"; fi; }
+
+# git init + .gitignore + commit đầu — idempotent (bỏ qua nếu đã có .git)
+init_git_repo() { # $1 = dir · $2 = commit msg · $3 = .gitignore nội dung (tuỳ chọn)
+  local dir="$1" msg="$2" gi="${3:-}"
+  if [ -d "$dir/.git" ]; then
+    say "git repo local: $dir (đã có — bỏ qua)"
+    return 0
+  fi
+  say "Init git repo local: $dir"
+  if [ "$DRY_RUN" = 1 ]; then
+    echo "  [dry-run] git init + .gitignore + first commit"
+    return 0
+  fi
+  if (
+    cd "$dir"
+    git init -b main >/dev/null 2>&1 || git init >/dev/null 2>&1
+    if [ -n "$gi" ] && [ ! -f .gitignore ]; then printf '%s\n' "$gi" > .gitignore; fi
+    git add -A
+    git commit -m "$msg" >/dev/null 2>&1
+  ); then
+    say "→ OK (first commit)"
+  else
+    warn "init/commit thất bại — kiểm tra git config user.name/user.email"
+  fi
+}
 
 say "ws-kit bootstrap"
 echo "  kit:         $KIT_DIR"
@@ -103,7 +130,11 @@ else
   warn "npm không có → bỏ qua cài deps plugin (kiểm tra lại sau khi cài node)"
 fi
 
-# ── 5. Kết thúc ───────────────────────────────────────────────────────────────
+# ── 5. Git repo local cho config + skills (local-only, không remote) ─────────
+init_git_repo "$TARGET" "init: opencode config (from ws-kit)" $'node_modules/\nservice.json\n.DS_Store\n*.log'
+init_git_repo "$SKILLS_PATH" "init: agent skills (from ws-kit)" ".DS_Store"
+
+# ── 6. Kết thúc ───────────────────────────────────────────────────────────────
 say "Bootstrap xong. Các bước tiếp theo:"
 cat <<'EOF'
   1. Secrets: tạo ~/.secrets/opencode.env (chmod 600) + source trong ~/.zshenv
@@ -112,4 +143,6 @@ cat <<'EOF'
   3. Vault: ./scripts/new-vault.sh "<Tên vault>" rồi mở bằng Obsidian
      → xem docs/05-vault-setup.md
   4. Kiểm tra: ./scripts/verify.sh
+  5. Git đa repo (khuyến nghị): cài tmux+lazygit (P1) + copy snippets/zsh-ws.zsh vào ~/.zshrc
+     → xem docs/00 §7
 EOF
