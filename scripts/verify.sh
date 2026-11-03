@@ -5,7 +5,7 @@
 #   ./scripts/verify.sh [--vault <path-vault>]
 #
 # Ghi chú:
-#   - Optional tools (jq/lazygit/colima...) không có → SKIP, không tính FAIL.
+#   - Optional tools (jq/lazygit/colima/tmux...) không có → SKIP, không tính FAIL.
 #   - chrome-devtools cần Google Chrome → thiếu thì WARN, không FAIL toàn bộ.
 set -uo pipefail
 
@@ -31,7 +31,8 @@ CONF="$HOME/.config/opencode/opencode.jsonc"
 echo "── opencode ──────────────────────────────────────────"
 if command -v opencode >/dev/null 2>&1; then
   V="$(opencode --version 2>/dev/null | head -1)"
-  case "$V" in
+  VN="$(printf '%s' "$V" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
+  case "$VN" in
     2.*) ok "opencode $V" ;;
     *)   warn "opencode version '$V' — kỳ vọng >= 2.0.x" ;;
   esac
@@ -43,7 +44,7 @@ fi
 echo "── config ────────────────────────────────────────────"
 if [ -f "$CONF" ]; then
   ok "config tồn tại: $CONF"
-  if grep -qE '"enabled"[[:space:]]*:' "$CONF" 2>/dev/null; then bad "config còn key v1 'enabled' (provider)"; else ok "config không lẫn key v1 'enabled'"; fi
+  if grep -qE '"enabled"[[:space:]]*:' "$CONF" 2>/dev/null; then bad "config còn key v1 'enabled'"; else ok "config không lẫn key v1 'enabled'"; fi
   if grep -q '@ai-sdk' "$CONF" 2>/dev/null; then bad "config còn npm v1 '@ai-sdk'"; else ok "config không lẫn '@ai-sdk'"; fi
   if grep -q '"codemode": false' "$CONF" 2>/dev/null || grep -q '"codemode":false' "$CONF" 2>/dev/null; then
     ok "codemode: false có trong config"
@@ -73,13 +74,16 @@ fi
 echo "── MCP + plugins ─────────────────────────────────────"
 if command -v opencode >/dev/null 2>&1; then
   MCP="$(opencode mcp list 2>/dev/null || true)"
-  for s in serena headroom chrome-devtools; do
-    if echo "$MCP" | grep -qi -- "$s"; then
-      ok "mcp: $s"
+  for s in obsidian serena headroom chrome-devtools; do
+    MCPLINE="$(printf '%s\n' "$MCP" | grep -E " +$s +" | head -1)"
+    if printf '%s' "$MCPLINE" | grep -qi "connected"; then
+      ok "mcp: $s connected"
     elif [ "$s" = "chrome-devtools" ]; then
       warn "mcp: chrome-devtools chưa kết nối (cần Google Chrome đã cài)"
+    elif [ "$s" = "obsidian" ]; then
+      warn "mcp: obsidian không bật — kit không dùng (agent đọc vault bằng filesystem)"
     else
-      bad "mcp: $s chưa thấy trong 'opencode mcp list'"
+      bad "mcp: $s chưa kết nối (xem: opencode mcp list)"
     fi
   done
   PL="$(opencode plugin list 2>/dev/null || true)"
@@ -94,7 +98,8 @@ fi
 echo "── headroom + rtk ────────────────────────────────────"
 if command -v headroom >/dev/null 2>&1; then
   headroom doctor >/dev/null 2>&1 && ok "headroom doctor OK" || warn "headroom doctor có cảnh báo — chạy 'headroom doctor' để xem"
-  if headroom install status 2>/dev/null | grep -qiE "running|active|loaded|8787"; then
+  HRS="$(headroom install status 2>/dev/null || true)"
+  if printf '%s' "$HRS" | grep -qiE "running|active|loaded|8787"; then
     ok "headroom install status OK"
   else
     warn "headroom install status — kiểm tra thủ công: headroom install status"
@@ -126,12 +131,20 @@ if [ -n "$VAULT" ]; then
   else
     bad "vault thiếu AGENTS.md/_templates: $VAULT"
   fi
+  if [ -d "$VAULT/.git" ]; then ok "vault là git repo (local-only)"; else warn "vault chưa init git → xem scripts/new-vault.sh"; fi
 else
   skip "vault check (truyền --vault <path> để kiểm tra)"
 fi
 
+echo "── git repo local (config/skills) ────────────────────"
+for p in "$HOME/.config/opencode" "$HOME/Documents/21.AgentSkills"; do
+  if [ ! -d "$p" ]; then skip "repo local: $p (chưa tồn tại)"
+  elif [ -d "$p/.git" ]; then ok "repo local: $p"
+  else warn "chưa init repo: $p → chạy scripts/bootstrap-macos.sh"; fi
+done
+
 echo "── optional tools ────────────────────────────────────"
-for t in jq lazygit colima; do
+for t in jq lazygit colima tmux; do
   if command -v "$t" >/dev/null 2>&1; then ok "optional: $t"; else skip "optional: $t"; fi
 done
 

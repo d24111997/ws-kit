@@ -8,6 +8,7 @@
 - [ ] `gh auth status` → logged in
 - [ ] `opencode --version` → `2.0.x` (v2)
 - [ ] `opencode debug paths` chạy được (thấy config/data/log paths)
+- [ ] (Khuyến nghị) `tmux` + `lazygit` đã cài — git workflow đa repo (docs/00 §7)
 
 ## P3 — headroom + rtk
 
@@ -26,6 +27,7 @@
 - [ ] `ls ~/.config/opencode/plugins` → `rtk.ts`, `serena-reminder.ts`
 - [ ] `ls ~/Documents/21.AgentSkills` → 25 skill
 - [ ] `~/.config/opencode/node_modules/@opencode/plugin` tồn tại (npm install OK)
+- [ ] Config + skills đã được init git repo local (bootstrap) — `git -C ~/.config/opencode log` có commit đầu
 
 ## P5 — secrets
 
@@ -55,6 +57,11 @@
 - [ ] Mở opencode trong 1 repo → agents load (thấy jack + subagents)
 - [ ] Chạy thử `/collect-context` hoặc `/plan-custom` → OK
 - [ ] (Optional) Thêm block rtk-instructions vào `~/.config/opencode/AGENTS.md` — snippet tại `docs/02-headroom.md §4`
+
+## Git workflow đa repo (khuyến nghị)
+
+- [ ] Đã copy `snippets/zsh-ws.zsh` vào `~/.zshrc` + sửa `WS_REPOS`
+- [ ] `lgall` mở tmux session (lazygit từng repo); `wsst` chạy OK
 
 ## Ghi chú vận hành
 

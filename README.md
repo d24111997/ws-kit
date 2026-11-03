@@ -13,9 +13,10 @@
 | **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 15 commands |
 | **Skills** | 25 skill tự viết (collect-context-*, discuss-custom, plan-custom, test-driven-development, ...) |
 | **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
-| **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP |
+| **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + tmux/lazygit (git đa repo) |
 | **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |
 | **Scripts** | `bootstrap-macos.sh` (kit → máy) · `capture.sh` (máy → kit, mặc định dry-run) · `new-vault.sh` · `verify.sh` |
+| **Snippets** | `zsh-ws.zsh` — helper git đa repo (lazygit + tmux: `lgall`/`wsst`) |
 
 ## Yêu cầu
 
@@ -29,6 +30,7 @@ macOS + Xcode Command Line Tools + Homebrew. Chi tiết: [docs/01-base-install.m
 # P1 — base tools
 brew install node uv git pnpm gh gitleaks
 brew install --cask obsidian google-chrome
+brew install tmux lazygit      # (khuyến nghị) git workflow đa repo — docs/00 §7
 
 # P2 — opencode v2
 brew update && brew install anomalyco/tap/opencode-v2
@@ -90,6 +92,7 @@ ws-kit/
 │  └─ plugins/                  # rtk.ts + serena-reminder.ts (v2-native)
 ├─ skills/                  # 25 skills → cài vào ~/Documents/21.AgentSkills
 ├─ vault-template/          # skeleton vault → new-vault.sh copy ra ~/Documents
+├─ snippets/                # zsh-ws.zsh — helper git đa repo (lgall/wsst)
 └─ scripts/                 # bootstrap-macos.sh · capture.sh · new-vault.sh · verify.sh
 ```
 
@@ -101,6 +104,8 @@ ws-kit/
 - **rtk instructions là tùy chọn** — opencode v2 không tự thêm block hướng dẫn rtk vào AGENTS.md; snippet có trong [docs/02 §4](docs/02-headroom.md).
 - **Không secret trong repo** — config dùng `{env:VAR}`; giá trị ở `~/.secrets/opencode.env`.
 - **Bootstrap luôn backup** — config cũ rename thành `~/.config/opencode.backup-<timestamp>`; skills path có dữ liệu được backup-copy `<skills-path>.backup-<timestamp>` trước khi merge.
+- **Git repo local-only cho config/skills/vault** — bootstrap (config/skills) + `new-vault.sh` (vault) tự `git init` + commit đầu; **không** cấu hình remote (muốn backup thì tự thêm remote private).
+- **Git đa repo: tmux + lazygit** — session `repos`, mỗi repo 1 window chạy lazygit; snippet `snippets/zsh-ws.zsh` (`lgall`/`wsst`) copy vào `~/.zshrc`; opencode chạy riêng.
 - **Model refs**: kit pin `opencode-go/deepseek-v4.1-flash` (OpenCode Go subscription). Nếu dùng provider khác → **remap model refs là bắt buộc** (xem [docs/04](docs/04-secrets.md) §3).
 
 ## Docs

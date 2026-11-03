@@ -26,4 +26,6 @@ credentials.json
 .venv/
 __pycache__/
 *.log
+
+# Serena (MCP) — config local, không commit
 .serena/
