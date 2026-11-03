@@ -15,7 +15,7 @@
 | **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
 | **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP |
 | **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |
-| **Scripts** | `bootstrap-macos.sh`, `new-vault.sh`, `verify.sh` |
+| **Scripts** | `bootstrap-macos.sh` (kit → máy) · `capture.sh` (máy → kit, mặc định dry-run) · `new-vault.sh` · `verify.sh` |
 
 ## Yêu cầu
 
@@ -60,6 +60,20 @@ cd ~/<repo-bất-kỳ> && opencode     # thử /collect-context hoặc /plan-cus
 
 > 📋 Checklist đầy đủ sau khi cài: [CHECKLIST.md](CHECKLIST.md)
 
+## Giữ kit đồng bộ với máy
+
+`bootstrap-macos.sh` chạy một chiều kit → máy. Khi bạn sửa agent/skill ngay trên máy, dùng chiều ngược lại:
+
+```bash
+./scripts/capture.sh            # dry-run: xem sẽ đổi gì
+./scripts/capture.sh --apply    # ghi thật vào kit
+cd ../<kit> && git diff --stat  # review rồi mới commit
+```
+
+- Hoàn toàn không sync: `opencode/AGENTS.md` (kit là template placeholder), `opencode.jsonc`, `cli.json`, `package.json`, `vault-template/`, `docs/`.
+- Skill cá nhân, không muốn lên kit: thêm tên vào `.kitignore`.
+- `capture.sh` mặc định **không xoá** skill trong kit mà máy không có; thêm `--prune-skills` nếu muốn xoá theo máy.
+
 ## Cấu trúc repo
 
 ```text
@@ -76,7 +90,7 @@ ws-kit/
 │  └─ plugins/                  # rtk.ts + serena-reminder.ts (v2-native)
 ├─ skills/                  # 25 skills → cài vào ~/Documents/21.AgentSkills
 ├─ vault-template/          # skeleton vault → new-vault.sh copy ra ~/Documents
-└─ scripts/                 # bootstrap-macos.sh · new-vault.sh · verify.sh
+└─ scripts/                 # bootstrap-macos.sh · capture.sh · new-vault.sh · verify.sh
 ```
 
 ## Quyết định thiết kế quan trọng

@@ -1,0 +1,5 @@
+# .kitignore — skill KHÔNG đồng bộ từ ~/Documents/21.AgentSkills lên kit.
+# Mỗi dòng một tên thư mục skill (glob của rsync). Dòng bắt đầu bằng # là comment.
+# Dùng cho skill cá nhân / thử nghiệm, không thuộc bộ dùng chung.
+
+tiktok-to-youtube-sync

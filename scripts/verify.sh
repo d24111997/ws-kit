@@ -43,7 +43,7 @@ fi
 echo "── config ────────────────────────────────────────────"
 if [ -f "$CONF" ]; then
   ok "config tồn tại: $CONF"
-  if grep -q '"enabled"' "$CONF" 2>/dev/null; then bad "config còn key v1 'enabled'"; else ok "config không lẫn key v1 'enabled'"; fi
+  if grep -qE '"enabled"[[:space:]]*:' "$CONF" 2>/dev/null; then bad "config còn key v1 'enabled' (provider)"; else ok "config không lẫn key v1 'enabled'"; fi
   if grep -q '@ai-sdk' "$CONF" 2>/dev/null; then bad "config còn npm v1 '@ai-sdk'"; else ok "config không lẫn '@ai-sdk'"; fi
   if grep -q '"codemode": false' "$CONF" 2>/dev/null || grep -q '"codemode":false' "$CONF" 2>/dev/null; then
     ok "codemode: false có trong config"
@@ -62,10 +62,18 @@ else
   bad "thiếu skills path ~/Documents/21.AgentSkills → chạy bootstrap"
 fi
 
+echo "── references ────────────────────────────────────────"
+if [ -d "$HOME/.config/opencode/references" ]; then
+  R="$(ls "$HOME/.config/opencode/references"/*.md 2>/dev/null | wc -l | tr -d ' ')"
+  ok "references có $R checklist"
+else
+  bad "thiếu ~/.config/opencode/references → chạy lại bootstrap"
+fi
+
 echo "── MCP + plugins ─────────────────────────────────────"
 if command -v opencode >/dev/null 2>&1; then
   MCP="$(opencode mcp list 2>/dev/null || true)"
-  for s in obsidian serena headroom chrome-devtools; do
+  for s in serena headroom chrome-devtools; do
     if echo "$MCP" | grep -qi -- "$s"; then
       ok "mcp: $s"
     elif [ "$s" = "chrome-devtools" ]; then
