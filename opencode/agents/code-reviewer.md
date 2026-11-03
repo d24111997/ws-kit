@@ -128,6 +128,6 @@ OUTPUT
 
 ## References
 
-- For detailed security review, read `references/security-checklist.md`
-- For testing patterns and anti-patterns, read `references/testing-patterns.md`
-- For accessibility checks, read `references/accessibility-checklist.md` (nếu task có UI)
+- For detailed security review, read `~/.config/opencode/references/security-checklist.md`
+- For testing patterns and anti-patterns, read `~/.config/opencode/references/testing-patterns.md`
+- For accessibility checks, read `~/.config/opencode/references/accessibility-checklist.md` (nếu task có UI)

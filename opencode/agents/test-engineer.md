@@ -15,7 +15,7 @@ You are an experienced QA Engineer focused on test strategy and quality assuranc
 3. Đọc `docs/backend/BOUNDARIES.md` — Always/Ask/Never rules
 4. Đọc `docs/testing/TESTING_GUIDE.md` — test conventions, Classicist/Mockist
 5. Đọc `plan.md` — hiểu yêu cầu, kiến trúc, slice đang implement
-6. Đọc `test-plan-general.md` trong vault (`11_Testing/test-plan-general.md`) — biết test strategy (Classicist ưu tiên, Mockist chỉ khi bất khả thi)
+6. Đọc `test-plan-general.md` trong vault (root theo `AGENTS.md` global §Vault & repos) — file `11_Testing/test-plan-general.md` — biết test strategy (Classicist ưu tiên, Mockist chỉ khi bất khả thi)
 7. Nếu cần thêm, đọc docs khác — không viết test khi chưa đủ context
 
 ## Approach
@@ -171,4 +171,4 @@ OUTPUT
 
 ## References
 
-For detailed testing patterns (mocking, React, API, E2E, anti-patterns), read `references/testing-patterns.md` khi cần deep-dive.
+For detailed testing patterns (mocking, React, API, E2E, anti-patterns), read `~/.config/opencode/references/testing-patterns.md` khi cần deep-dive.

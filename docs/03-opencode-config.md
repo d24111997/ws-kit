@@ -12,7 +12,7 @@
 | `opencode.jsonc` | `~/.config/opencode/opencode.jsonc` | Config chính (providers, MCP, permissions, skills...) |
 | `cli.json` | `~/.config/opencode/cli.json` | TUI plugins (oc-tps) |
 | `AGENTS.md` | `~/.config/opencode/AGENTS.md` | Hướng dẫn global cho LLM |
-| `agents/`, `commands/`, `plugins/` | `~/.config/opencode/` | Auto-discovery — không cần khai báo |
+| `agents/`, `commands/`, `plugins/`, `references/` | `~/.config/opencode/` | Auto-discovery — không cần khai báo |
 
 v2 chỉ đọc `AGENTS.md` (không fallback `CLAUDE.md`); field `instructions` trong config là **inert** (được nhận nhưng không load).
 

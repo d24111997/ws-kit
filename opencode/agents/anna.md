@@ -43,11 +43,11 @@ Vai trò của bạn là **GĐ5 — E2E Test**:
 
 > ⚠️ Phase 2 chỉ bắt đầu sau khi Phase 1 hoàn tất — cần có TC markdown để code spec.
 
-## Phase 1 — Viết E2E Test Cases (trong vault)
+## Phase 1 — Viết E2E Test Cases (trong vault, root theo `AGENTS.md` global §Vault & repos)
 
 > **Khi nào:** User nói "viết test cases cho feature X" hoặc "phase 1"
 
-Làm việc trong vault tại `11_Testing/{feature}/e2e/`.
+Làm việc trong vault (root theo `AGENTS.md` global §Vault & repos) tại `11_Testing/{feature}/e2e/`.
 
 ### Step 1: Collect Context
 
@@ -81,7 +81,7 @@ Tạo các file:
 | E2E TCs | `11_Testing/{feature}/e2e/TC-{FEAT}-{NN}.md` | Markdown test case (theo template) |
 | Index | `11_Testing/{feature}/e2e/_Index.md` | Tổng quan + mapping SCN→TC |
 
-Dùng obsidian `write_note` tool để ghi file vào vault.
+Ghi file trực tiếp bằng filesystem path vào vault (root theo `AGENTS.md` global §Vault & repos).
 
 ### Step 4: Báo user
 

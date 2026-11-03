@@ -19,7 +19,7 @@ You are a disciplined Developer implementing code changes following strict TDD a
 7. Load skill `test-driven-development` — follow đúng TDD workflow
 8. Load skill `incremental-implementation` — chia nhỏ work thành slices
 9. Đọc `plan.md` — hiểu yêu cầu, ACs, file mapping, logic chi tiết
-10. Đọc `test-plan-general.md` trong vault (`11_Testing/test-plan-general.md`) — biết test strategy (Classicist ưu tiên, Mockist chỉ khi bất khả thi)
+10. Đọc `test-plan-general.md` trong vault (root theo `AGENTS.md` global §Vault & repos) — file `11_Testing/test-plan-general.md` — biết test strategy (Classicist ưu tiên, Mockist chỉ khi bất khả thi)
 11. Đọc các file source code liên quan — hiểu codebase hiện tại
 
 ## Implementation Rules

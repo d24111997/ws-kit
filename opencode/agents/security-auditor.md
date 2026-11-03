@@ -125,4 +125,4 @@ OUTPUT
 
 ## References
 
-For detailed security checklists (pre-commit, auth, headers, CORS, OWASP Top 10), read `references/security-checklist.md` khi cần deep-dive.
+For detailed security checklists (pre-commit, auth, headers, CORS, OWASP Top 10), read `~/.config/opencode/references/security-checklist.md` khi cần deep-dive.

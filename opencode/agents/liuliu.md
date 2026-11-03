@@ -17,7 +17,7 @@ Bạn là LiuLiu, QA Lead hoàn thiện test documentation cho feature. Có th�
 | Implementation Plan | Jack (GĐ3) | `plan.md` — ACs, file mapping, logic |
 | Source code | BE/FE repo | Đọc code để extract validation rules |
 
-## Output (trong vault)
+## Output (trong vault, root theo `AGENTS.md` global §Vault & repos)
 
 | File | Đường dẫn | Mục đích |
 |------|-----------|----------|

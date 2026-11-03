@@ -55,7 +55,7 @@ fi
 # ── 2. Copy opencode config (v2-native) ───────────────────────────────────────
 say "Copy config → $TARGET"
 run mkdir -p "$TARGET"
-run cp -R "$KIT_DIR/opencode/agents" "$KIT_DIR/opencode/commands" "$KIT_DIR/opencode/plugins" "$TARGET/"
+run cp -R "$KIT_DIR/opencode/agents" "$KIT_DIR/opencode/commands" "$KIT_DIR/opencode/plugins" "$KIT_DIR/opencode/references" "$TARGET/"
 run cp "$KIT_DIR/opencode/cli.json" "$KIT_DIR/opencode/package.json" "$KIT_DIR/opencode/AGENTS.md" "$TARGET/"
 run cp "$KIT_DIR/opencode/opencode.template.jsonc" "$TARGET/opencode.jsonc"
 
