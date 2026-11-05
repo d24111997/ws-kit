@@ -73,8 +73,21 @@ fi
 
 echo "── MCP + plugins ─────────────────────────────────────"
 if command -v opencode >/dev/null 2>&1; then
-  MCP="$(opencode mcp list 2>/dev/null || true)"
+  # `opencode mcp list` trả lời qua background service. Ngay sau khi đổi config
+  # (hoặc khi service đang restart) lệnh trả về "No MCP servers configured" dù MCP
+  # vẫn chạy bình thường → check sẽ báo FAIL sai. Thử lại trước khi kết luận.
+  MCP=""
+  for _ in 1 2 3; do
+    MCP="$(opencode mcp list 2>/dev/null || true)"
+    printf '%s' "$MCP" | grep -qiE 'connected|disabled|disconnected' && break
+    sleep 2
+  done
+  if ! printf '%s' "$MCP" | grep -qiE 'connected|disabled|disconnected'; then
+    warn "không đọc được danh sách MCP (service đang khởi động?) — bỏ check MCP, xem lại: opencode mcp list"
+    MCP="SKIP_NO_LIST"
+  fi
   for s in obsidian serena headroom chrome-devtools; do
+    [ "$MCP" = "SKIP_NO_LIST" ] && break
     MCPLINE="$(printf '%s\n' "$MCP" | grep -E " +$s +" | head -1)"
     if printf '%s' "$MCPLINE" | grep -qi "connected"; then
       ok "mcp: $s connected"
@@ -97,7 +110,18 @@ fi
 
 echo "── headroom + rtk ────────────────────────────────────"
 if command -v headroom >/dev/null 2>&1; then
-  headroom doctor >/dev/null 2>&1 && ok "headroom doctor OK" || warn "headroom doctor có cảnh báo — chạy 'headroom doctor' để xem"
+  # headroom doctor trả exit≠0 cả khi chỉ có warning (0 failure, N warning) → không
+  # được coi exit code là FAIL. Đọc dòng tổng kết "X failure(s), Y warning(s)".
+  HD="$(headroom doctor 2>&1 || true)"
+  HD_FAIL="$(printf '%s\n' "$HD" | grep -oE '[0-9]+ failure' | tail -1 | grep -oE '[0-9]+')"
+  HD_WARN="$(printf '%s\n' "$HD" | grep -oE '[0-9]+ warning' | tail -1 | grep -oE '[0-9]+')"
+  if [ -z "$HD_FAIL" ]; then
+    warn "headroom doctor không đọc được kết quả — chạy 'headroom doctor' để xem"
+  elif [ "$HD_FAIL" -eq 0 ]; then
+    ok "headroom doctor OK (0 failure · ${HD_WARN:-0} warning — chi tiết: headroom doctor)"
+  else
+    bad "headroom doctor $HD_FAIL failure — chạy 'headroom doctor' để xem"
+  fi
   HRS="$(headroom install status 2>/dev/null || true)"
   if printf '%s' "$HRS" | grep -qiE "running|active|loaded|8787"; then
     ok "headroom install status OK"

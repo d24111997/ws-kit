@@ -33,6 +33,7 @@ Backup config cũ (tạo bởi bootstrap): `~/.config/opencode.backup-<timestamp
 - **chrome-devtools**: cần Google Chrome đã cài (`brew install --cask google-chrome`).
 - **serena/headroom**: chạy `uvx --version` / `headroom doctor` để kiểm tra binary.
 - Thử restart service: `opencode service restart`
+- **`opencode mcp list` trả `No MCP servers configured`** — thường gặp ngay sau khi đổi config hoặc khi service đang restart, không phải config hỏng: chờ vài giây rồi chạy lại. `verify.sh` thử lại tối đa 3 lần (cách 2s) trước khi kết luận, và nếu vẫn không đọc được danh sách thì báo WARN thay vì FAIL từng server.
 
 ### headroom proxy :8787 không phản hồi
 
@@ -41,6 +42,8 @@ headroom install status
 headroom install restart        # hoặc: headroom install apply --providers manual
 curl -s http://127.0.0.1:8787/health
 ```
+
+Lưu ý: `headroom doctor` trả **exit ≠ 0 cả khi chỉ có warning** (`0 failure(s), 5 warning(s)` là trạng thái bình thường). Đọc dòng tổng kết chứ đừng coi exit code là fail — `verify.sh` đã làm vậy: `0 failure` → PASS kèm số warning, `>0 failure` → FAIL, không đọc được → WARN.
 
 ### chrome-devtools MCP "connected" nhưng tool báo `Could not find DevToolsActivePort`
 
