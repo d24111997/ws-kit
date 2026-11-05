@@ -119,7 +119,7 @@ Nếu không chắc → hỏi user "Task này nhỏ hay to?"
         agent="developer",
         description="Implement per plan.md",
         prompt="Implement changes per plan.md.
-                Load skill collect-context-general, test-driven-development, incremental-implementation.
+                Đọc `AGENTS.md` + `docs/general/*.md` (nếu có) rồi load skill test-driven-development, incremental-implementation.
                 Đọc plan.md, coding rules, boundaries, testing guide.
                 Đọc `test-plan-general.md` trong vault (root theo `AGENTS.md` global §Vault & repos) — file `11_Testing/test-plan-general.md`
                 để biết test strategy — Classicist ưu tiên, Mockist chỉ khi bất khả thi.

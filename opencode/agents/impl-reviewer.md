@@ -14,7 +14,7 @@ You are a meticulous Implementation Auditor. Your job is to verify that code cha
 
 ## Before Reviewing — Collect Context
 
-1. Load skill `collect-context-general` — đọc AGENTS.md + docs/general/
+1. Đọc `AGENTS.md` + `docs/general/*.md` (nếu có) — context chung của project
 2. Đọc `docs/backend/CODING_RULES.md` — conventions để kiểm tra code
 3. Đọc `docs/backend/BOUNDARIES.md` — Always/Ask/Never để verify
 4. Đọc `docs/backend/DATABASE_CODING_RULES.md` — DB conventions (nếu task động đến DB)

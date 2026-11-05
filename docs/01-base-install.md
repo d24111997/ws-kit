@@ -71,7 +71,7 @@ cd ~/ws-kit
 ./scripts/bootstrap-macos.sh            # flags: --skills-path, --target-dir, --dry-run
 ```
 
-Bootstrap sẽ: backup `~/.config/opencode` cũ (nếu có) → copy config v2-native + agents/commands/plugins → cài 25 skills vào `~/Documents/21.AgentSkills` → `npm install` deps cho plugin local → `git init` + commit đầu cho `~/.config/opencode` và skills path (**repo local-only**, không cấu hình remote — xem docs/00 §1).
+Bootstrap sẽ: backup `~/.config/opencode` cũ (nếu có) → copy config v2-native + agents/commands/plugins → cài 18 skills vào `~/Documents/21.AgentSkills` → `npm install` deps cho plugin local → `git init` + commit đầu cho `~/.config/opencode` và skills path (**repo local-only**, không cấu hình remote — xem docs/00 §1).
 
 ## P5 — Secrets + account
 
@@ -107,7 +107,7 @@ Kết quả mong đợi: PASS toàn bộ, một vài WARN/SKIP hợp lệ (optio
 
 ```bash
 cd ~/<repo-bất-kỳ> && opencode
-# thử: /plan-custom hoặc /collect-context — kiểm tra agents/skills load
+# thử: /plan-custom — kiểm tra agents/skills load
 ```
 
 ---

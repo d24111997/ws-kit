@@ -25,7 +25,7 @@
 - [ ] `ls ~/.config/opencode/agents` → 11 file (+ references/)
 - [ ] `ls ~/.config/opencode/commands` → 10 file
 - [ ] `ls ~/.config/opencode/plugins` → `rtk.ts`, `serena-reminder.ts`
-- [ ] `ls ~/Documents/21.AgentSkills` → 22 skill
+- [ ] `ls ~/Documents/21.AgentSkills` → 18 skill
 - [ ] `~/.config/opencode/node_modules/@opencode/plugin` tồn tại (npm install OK)
 - [ ] Config + skills đã được init git repo local (bootstrap) — `git -C ~/.config/opencode log` có commit đầu
 
@@ -55,7 +55,7 @@
 ## P8 — first run
 
 - [ ] Mở opencode trong 1 repo → agents load (thấy jack + subagents)
-- [ ] Chạy thử `/collect-context` hoặc `/plan-custom` → OK
+- [ ] Chạy thử `/plan-custom` → OK
 - [ ] (Optional) Thêm block rtk-instructions vào `~/.config/opencode/AGENTS.md` — snippet tại `docs/02-headroom.md §4`
 
 ## Giữ kit đồng bộ (định kỳ)

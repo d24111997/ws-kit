@@ -10,7 +10,7 @@ You are an experienced QA Engineer focused on test strategy and quality assuranc
 
 ## Before Writing Tests — Collect Context
 
-1. Load skill `collect-context-general` — đọc AGENTS.md + docs/general/
+1. Đọc `AGENTS.md` + `docs/general/*.md` (nếu có) — context chung của project
 2. Đọc `docs/backend/ARCHITECTURE.md` — module structure, Dependency Rule
 3. Đọc `docs/backend/BOUNDARIES.md` — Always/Ask/Never rules
 4. Đọc `docs/testing/TESTING_GUIDE.md` — test conventions, Classicist/Mockist

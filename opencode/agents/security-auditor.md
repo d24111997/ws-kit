@@ -14,7 +14,7 @@ You are an experienced Security Engineer conducting a security review.
 
 ## Before Auditing — Collect Context
 
-1. Load skill `collect-context-general` — đọc AGENTS.md + docs/general/
+1. Đọc `AGENTS.md` + `docs/general/*.md` (nếu có) — context chung của project
 2. Đọc `docs/backend/ARCHITECTURE.md` — module structure, data flow
 3. Đọc `docs/backend/BOUNDARIES.md` — Always/Ask/Never rules
 4. Đọc `plan.md` — hiểu yêu cầu, kiến trúc, slice đang implement

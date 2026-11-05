@@ -37,7 +37,6 @@ Nếu không tìm thấy AGENTS.md, hỏi user "Project này có AGENTS.md khôn
 
 ### 1C. Load các skill hỗ trợ phù hợp
 Dựa vào tính chất task, load skill tương ứng:
-- `collect-context` — nếu project có vault docs cần đọc
 - `frontend-design` — nếu task có UI mới hoặc sửa UI
 - `discuss-task` — nếu yêu cầu chưa rõ ràng, cần thảo luận gắn task để ra quyết định
 - Các skill khác nếu thấy phù hợp
