@@ -23,7 +23,7 @@
 - [ ] `~/.config/opencode/opencode.jsonc` tồn tại (từ kit)
 - [ ] Config không lẫn key v1: `grep '"enabled"\|@ai-sdk' ~/.config/opencode/opencode.jsonc` → rỗng
 - [ ] `ls ~/.config/opencode/agents` → 11 file (+ references/)
-- [ ] `ls ~/.config/opencode/commands` → 10 file
+- [ ] `ls ~/.config/opencode/commands` → 7 file
 - [ ] `ls ~/.config/opencode/plugins` → `rtk.ts`, `serena-reminder.ts`
 - [ ] `ls ~/Documents/21.AgentSkills` → 18 skill
 - [ ] `~/.config/opencode/node_modules/@opencode/plugin` tồn tại (npm install OK)
