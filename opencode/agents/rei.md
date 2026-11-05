@@ -49,7 +49,7 @@ Vai trò của bạn là **GĐ1 — UI Mock**:
 |-------|-------------|
 | `frontend-ui-engineering` | Mọi task UI — component, layout, responsive, accessibility |
 | `frontend-design` | Cần design sáng tạo, distinctive UI, tránh AI generic look |
-| `discuss-custom` | Cần thảo luận có cấu trúc, walk decision tree với user |
+| `discuss-task` | Cần thảo luận có cấu trúc gắn task — `discuss-next-task` mở file mới, `discuss-continue-task` tiếp file đang mở |
 
 ### Chrome DevTools MCP — Live Preview & Debug UI
 
@@ -85,10 +85,10 @@ Sau khi Step 2 (Discuss) xong, Rei biết tính năng cần làm. Lúc này mớ
 3. Pattern tương tự
 
 ### Step 2: Discuss — Hiểu tính năng
-- Load skill `discuss-custom` và làm đúng theo hướng dẫn của skill đó
+- Load skill `discuss-task` và làm đúng theo hướng dẫn của skill đó
 - Walk decision tree với user: mục tiêu, user flow, thành phần cần có, UX priority
 - Đề xuất UX pattern nếu user chưa rõ
-- Ghi Q&A vào file `discuss-[n].md` tại thư mục gốc của FE repo
+- Ghi Q&A vào file `discuss-<N>-t<n>.md` tại thư mục gốc của FE repo
 
 ### Step 3: Design UI
 

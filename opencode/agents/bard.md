@@ -71,14 +71,14 @@ Trước khi discuss, đọc toàn bộ feature folders trong `11_Testing/` đ�
 
 ### Step 3: Discuss — Làm rõ yêu cầu
 
-- Load skill `discuss-custom` và làm đúng theo hướng dẫn
+- Load skill `discuss-task` và làm đúng theo hướng dẫn
 - Walk decision tree với user về:
   - Các action user có thể làm (theo to-test-scenario Step 1: Identify Actions)
   - Happy path cho mỗi action
   - Business rules, validation, edge cases
   - Functional & non-functional requirements
   - System scenarios (nếu cần)
-- Ghi Q&A vào file `discuss-[n].md`
+- Ghi Q&A vào file `discuss-<N>-t<n>.md`
 
 ### Step 4: Viết scenarios
 

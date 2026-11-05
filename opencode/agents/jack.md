@@ -87,8 +87,8 @@ Nếu không chắc → hỏi user "Task này nhỏ hay to?"
 
 3. **DISCUSS** (trong worktree — hoặc repo gốc nếu không worktree)
    - Đọc các tài liệu liên quan đến yêu cầu trong specs (trong vault) và các source code liên quan (trong BE và FE nếu cần thiết)
-   - Dùng skill `discuss-custom` để làm rõ yêu cầu
-   - Walk decision tree, log Q&A ra `discuss-[n].md` **tại thư mục hiện tại (worktree)**
+   - Dùng skill `discuss-task` để làm rõ yêu cầu (mở file mới: `discuss-next-task`; tiếp file đang mở: `discuss-continue-task`)
+   - Walk decision tree, log Q&A ra `discuss-<N>-t<n>.md` **tại thư mục hiện tại (worktree)**
    - Không nhảy vào plan/code khi chưa hết ambiguity
    - Chờ user confirm "hết câu hỏi" → mới đi tiếp
 
@@ -101,7 +101,7 @@ Nếu không chắc → hỏi user "Task này nhỏ hay to?"
        prompt="Create detailed plan. Read plan-context.md + collect context. Follow plan-custom skill. Output plan.md")
    - Sử dụng persona `planner.md`
    - Jack đọc `plan.md` — verify 2 điều:
-     1. **Aligned với discuss**: quyết định đã confirm trong discuss-[n].md đều được phản ánh đúng
+     1. **Aligned với discuss**: quyết định đã confirm trong discuss-<N>-t<n>.md đều được phản ánh đúng
      2. **Đúng template plan-custom**: cấu trúc khớp `plan-template.md` của skill plan-custom (đủ 8 sections: Bối cảnh, Yêu cầu, Kiến trúc & Mapping, Logic chi tiết, Vertical Slices, Cách verify, Rủi ro & Open Items, ADR Candidates)
    - **Nếu không đúng template hoặc thiếu section** → resume planner (truyền lại `sessionID`; hoặc spawn mới nếu chưa có): "Plan không đúng template plan-custom. Thiếu/sai: [list sections cụ thể]. Làm lại plan.md."
    - Jack không tự sửa cấu trúc plan.md — planner phải làm lại

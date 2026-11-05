@@ -55,7 +55,7 @@ Mỗi repo có bộ tài liệu riêng:
 
 ## 6. Vòng đời task (gợi ý)
 
-1. **Discuss** — làm rõ yêu cầu, log vào `discuss-[n].md` (trong repo/worktree).
+1. **Discuss** — làm rõ yêu cầu, log vào `discuss-<N>-t<n>.md` (trong repo/worktree).
 2. **Plan** — plan.md với vertical slices.
 3. **Build** — implement theo TDD, từng slice.
 4. **Review** — impl-review → test coverage → code review + security (song song).

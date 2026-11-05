@@ -10,8 +10,8 @@
 | Thành phần | Nội dung |
 |---|---|
 | **opencode v2 config** | `opencode.jsonc` v2-native: providers (openrouter/commandcode/headroom/opencode-go), MCP servers, permissions, model variants |
-| **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 13 commands |
-| **Skills** | 23 skill tự viết (collect-context-*, discuss-custom, plan-custom, test-driven-development, ...) |
+| **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 10 commands |
+| **Skills** | 22 skill tự viết (collect-context-*, discuss-task, plan-custom, test-driven-development, ...) |
 | **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
 | **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + tmux/lazygit (git đa repo) |
 | **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |

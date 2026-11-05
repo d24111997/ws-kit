@@ -1,6 +1,6 @@
 ---
 name: discuss-next-task
-description: Mở một file thảo luận mới cho task — đọc phản hồi ở file trước, ghi quyết định vào file task, tạo discuss-<N+1>.md theo DISCUSS_TEMPLATE.md. Use when the user answers in a discuss file and chooses to open the next discussion file.
+description: Mở một file thảo luận mới cho task — đọc phản hồi ở file trước, ghi quyết định vào file task, tạo discuss-<N+1>-t<n>.md theo DISCUSS_TEMPLATE.md. Use when the user answers in a discuss file and chooses to open the next discussion file.
 ---
 
 # Skill: `discuss-next-task`
@@ -22,7 +22,8 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 
 ## Bước 3 — Tạo file mới
 
-- Số mới = **số lớn nhất hiện có trong folder + 1** (không dùng file đếm; mất file thì lấy số lớn nhất còn lại, git giữ lịch sử).
+- Số mới = **số lớn nhất hiện có trong folder + 1** (không dùng file đếm; mất file thì lấy số lớn nhất còn lại, git giữ lịch sử). Số là phần chữ số ngay sau `discuss-`.
+- Tên file mới: `discuss-<N+1>-t<n>.md` — `<n>` là số task của cuộc đang mở (`T-40` → `discuss-95-t40.md`). Đuôi `-t<n>` giữ để hai dòng việc song song không đụng tên file dù trùng số.
 - Dựng theo `DISCUSS_TEMPLATE.md`, gồm:
   - **Nối tiếp**: phản hồi đã nhận ở file trước (trích ngắn) · danh sách `T-<n>/D-<k>` đã khoá · chỗ còn treo · lý do mở file.
   - Câu chưa trả lời ở file trước: nêu lại nguyên câu đó, không tự đóng.
@@ -40,6 +41,7 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 - [ ] Quyết định đã khoá có `D-<k>` trong file task.
 - [ ] File mới chỉ trỏ quyết định, không chép.
 - [ ] File mới khai `**Task:** T-<n>`; mục `Thảo luận` của task không đổi.
+- [ ] Tên file đúng mẫu `discuss-<N+1>-t<n>.md` — số lấy từ số lớn nhất trong folder, đuôi `-t<n>` khớp task.
 - [ ] Chat 1–2 dòng.
 
 ## Không được

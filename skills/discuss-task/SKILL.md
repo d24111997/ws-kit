@@ -29,9 +29,9 @@ Task chưa có file → dừng và báo người làm tạo task trước. Khôn
 
 | Tình huống | Làm gì |
 |---|---|
-| Task chưa có cuộc thảo luận | Tạo `discuss-<N>.md` theo template; `N` = số lớn nhất trong folder workstream + 1 |
+| Task chưa có cuộc thảo luận | Tạo `discuss-<N>-t<n>.md` theo template; `N` = số lớn nhất trong folder workstream + 1, `<n>` = số task (`T-40` → `-t40`) |
 | Người làm chọn tiếp trong file đang mở | Thêm cụm mới + mục Ghi nhận vào cuối file đó (chỉ thêm, không sửa phần cũ) |
-| Người làm chọn mở file mới | Tạo `discuss-<N+1>.md`, mở đầu bằng **Nối tiếp**: phản hồi đã nhận · `T-n/D-k` đã khoá · chỗ còn treo · lý do mở file |
+| Người làm chọn mở file mới | Tạo `discuss-<N+1>-t<n>.md`, mở đầu bằng **Nối tiếp**: phản hồi đã nhận · `T-n/D-k` đã khoá · chỗ còn treo · lý do mở file |
 | Không rõ ý người làm | Hỏi đúng một câu: tiếp file này hay mở file mới |
 
 Skill **không** tự quyết chỗ ghi; hai đường vào là `discuss-continue-task` (tiếp file đang mở) và `discuss-next-task` (mở file mới). File thảo luận tự khai `**Task:** T-<n>`; mục `Thảo luận` của task là một dòng cố định trỏ folder — **không sửa task** khi mở cuộc.
