@@ -11,7 +11,7 @@
 |---|---|
 | **opencode v2 config** | `opencode.jsonc` v2-native: providers (openrouter/commandcode/headroom/opencode-go), MCP servers, permissions, model variants |
 | **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 10 commands |
-| **Skills** | 22 skill tự viết (collect-context-*, discuss-task, plan-custom, test-driven-development, ...) |
+| **Skills** | 18 skill tự viết (discuss-task, plan-custom, test-driven-development, ...) |
 | **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
 | **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + tmux/lazygit (git đa repo) |
 | **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |
@@ -57,7 +57,7 @@ mkdir -p ~/.secrets && touch ~/.secrets/opencode.env && chmod 600 ~/.secrets/ope
 ./scripts/verify.sh --vault ~/Documents/"<Tên vault>"
 
 # P8 — first run
-cd ~/<repo-bất-kỳ> && opencode     # thử /collect-context hoặc /plan-custom
+cd ~/<repo-bất-kỳ> && opencode     # thử /plan-custom
 ```
 
 > 📋 Checklist đầy đủ sau khi cài: [CHECKLIST.md](CHECKLIST.md)
@@ -90,7 +90,7 @@ ws-kit/
 │  ├─ agents/                   # 11 agents + references/ (3 checklist)
 │  ├─ commands/                 # 13 commands
 │  └─ plugins/                  # rtk.ts + serena-reminder.ts (v2-native)
-├─ skills/                  # 25 skills → cài vào ~/Documents/21.AgentSkills
+├─ skills/                  # 18 skills → cài vào ~/Documents/21.AgentSkills
 ├─ vault-template/          # skeleton vault → new-vault.sh copy ra ~/Documents
 ├─ snippets/                # zsh-ws.zsh — helper git đa repo (lgall/wsst)
 └─ scripts/                 # bootstrap-macos.sh · capture.sh · new-vault.sh · verify.sh

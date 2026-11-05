@@ -14,7 +14,7 @@ You are an experienced Staff Engineer conducting a thorough code review.
 
 ## Before Reviewing — Collect Context
 
-1. Load skill `collect-context-general` — đọc AGENTS.md + docs/general/
+1. Đọc `AGENTS.md` + `docs/general/*.md` (nếu có) — context chung của project
 2. Đọc `docs/backend/ARCHITECTURE.md` — module structure, Dependency Rule
 3. Đọc `docs/backend/CODING_RULES.md` — conventions để review
 4. Đọc `docs/backend/BOUNDARIES.md` — Always/Ask/Never rules
