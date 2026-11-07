@@ -26,6 +26,8 @@ tags:
 **Then** {kết quả observable ngay lập tức}
 **And** {kết quả tiếp theo — nếu có}
 
+**Nhiều nhánh trong một scenario** — mỗi nhánh là một heading `#### Nhánh A — <tên nhánh>` đặt **trước** khối `Given/When/Then` của nhánh đó; không đặt nhãn sau khối. Mỗi nhánh vẫn có đủ `Given/When/Then`.
+
 ## Notes
 - {lưu ý về implementation detail, business rule, edge case}
 - {lý do scenario quan trọng}
@@ -80,5 +82,5 @@ scenario/
 - **Given** = trạng thái. **When** = trigger. **Then** = observable result.
 - Không viết quá chi tiết: "{item} được xử lý thành công", không phải "POST trả về 200 với id = uuid4".
 - `matrix-ref` trong frontmatter để traceability từ scenario → validation matrix row.
-- Mỗi SCN chỉ thể hiện 1 nhánh, nếu có nhiều nhánh chia nhiều SCN
+- Mỗi SCN thường chỉ thể hiện 1 nhánh; khi cần nhiều nhánh trong cùng một file (cùng hành vi, khác điều kiện), theo quy ước nhãn nhánh ở mục `## Scenario`.
 - SCN phải thể hiện câu chuyện từ góc nhìn của actor. ví dụ USER thì k thể biến là FE gửi request như thế nào, chỉ có thể thấy đang gửi, kết quả. 

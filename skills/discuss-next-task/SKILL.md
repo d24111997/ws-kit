@@ -14,7 +14,7 @@ Người làm đã trả lời trong file thảo luận và chọn mở file ti�
 ## Bước 1 — Nạp
 
 - Đọc `discuss-task` để lấy luật chung (Nguyên tắc · Bước 3 · Bước 4 · Không được).
-- Đọc **toàn bộ** file thảo luận trước và file task (mục tiêu, phạm vi, chủ đề mở, quyết định, thảo luận).
+- Đọc **toàn bộ** file thảo luận trước và file task (mục tiêu, phạm vi, chủ đề mở, quyết định, thảo luận); không grep `=>` thay cho việc đọc.
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 
@@ -26,6 +26,7 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 - Tên file mới: `discuss-<N+1>-t<n>.md` — `<n>` là số task của cuộc đang mở (`T-40` → `discuss-95-t40.md`). Đuôi `-t<n>` giữ để hai dòng việc song song không đụng tên file dù trùng số.
 - Dựng theo `DISCUSS_TEMPLATE.md`, gồm:
   - **Nối tiếp**: phản hồi đã nhận ở file trước (trích ngắn) · danh sách `T-<n>/D-<k>` đã khoá · chỗ còn treo · lý do mở file.
+  - **Trả lời câu hỏi ở file trước**: câu hỏi người làm thêm trong file cũ — kể cả dòng không có `=>` — chép nguyên văn + đáp án, đặt ngay sau Nối tiếp; không chôn trong phân tích.
   - Câu chưa trả lời ở file trước: nêu lại nguyên câu đó, không tự đóng.
   - Cụm câu hỏi tiếp theo, nếu còn ambiguity.
 - Không chép nội dung quyết định sang file mới.
@@ -37,6 +38,7 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 
 ## Bước 5 — Kiểm
 
+- [ ] Đã đọc toàn bộ file thảo luận trước (không chỉ grep `=>`); mọi dòng người làm thêm đã được phân loại.
 - [ ] Mỗi `=>` đã phân loại và ghi nhận.
 - [ ] Quyết định đã khoá có `D-<k>` trong file task.
 - [ ] File mới chỉ trỏ quyết định, không chép.

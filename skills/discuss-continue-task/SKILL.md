@@ -14,7 +14,7 @@ Người làm đã trả lời trong file thảo luận và chọn tiếp trong 
 ## Bước 1 — Nạp
 
 - Đọc `discuss-task` để lấy luật chung.
-- Đọc **toàn bộ** file thảo luận đang mở và file task.
+- Đọc **toàn bộ** file thảo luận đang mở và file task; không grep `=>` thay cho việc đọc.
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 
@@ -29,6 +29,7 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 
 ## Bước 4 — Kiểm
 
+- [ ] Đã đọc toàn bộ file thảo luận (không chỉ grep `=>`); mọi dòng người làm thêm đã được phân loại.
 - [ ] Mỗi `=>` đã phân loại và ghi nhận.
 - [ ] Quyết định đã khoá có `D-<k>` trong file task.
 - [ ] File thảo luận chỉ trỏ quyết định, không chép.

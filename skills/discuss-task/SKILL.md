@@ -12,8 +12,9 @@ description: Thảo luận có cấu trúc gắn với task của workspace — 
 1. **Thảo luận trong file, không trong chat.** Chat chỉ 1–2 dòng: file nào, cụm nào đang mở.
 2. **Quyết định thuộc về task.** Thảo luận giữ *vì sao* và *phương án đã loại*; điều đã chốt ghi vào mục `Quyết định` của file task (`D-1`, `D-2`…).
 3. **Chỉ thêm.** Không sửa phần đã viết của file thảo luận; lệch với quyết định thì quyết định đúng.
-4. **Phương án đánh chữ in hoa `A · B · C · D`.** Người làm trả lời bằng chữ in hoa, inline sau `=>`.
-5. Agent **không** tự chốt quyết định, không tự đóng câu hỏi, không tự đóng task, không tự thêm khái niệm hay luật vào mô hình.
+4. **Đọc toàn bộ trước khi xử lý.** Trước khi phân loại phản hồi, đọc file thảo luận từ đầu đến cuối; grep `=>` hoặc trích dòng không thay được việc đọc. Mọi dòng người làm thêm vào file — kể cả không có `=>`, không có dấu `?` — đều phải được phân loại: trả lời · câu hỏi · ghi chú.
+5. **Phương án đánh chữ in hoa `A · B · C · D`.** Người làm trả lời bằng chữ in hoa, inline sau `=>`.
+6. Agent **không** tự chốt quyết định, không tự đóng câu hỏi, không tự đóng task, không tự thêm khái niệm hay luật vào mô hình.
 
 ## Bước 1 — Nạp dữ kiện (không nạp cả repo)
 
@@ -56,7 +57,9 @@ Phân loại trước khi ghi:
 | Đã chốt | Chọn `A/B/C…` hoặc nêu một giá trị cụ thể | Ghi `### Ghi nhận Qx.y (ngày)` + thêm dòng vào bảng quyết định cụm |
 | Hỏi ngược | Hỏi lại, xin ý kiến, "nên kiểu nào" | Trả lời ngay dưới câu hỏi đó; **không** tính là chốt; nêu lại phương án để người làm chọn |
 | Chưa rõ | Trả lời lệch phạm vi câu hỏi | Ghi nhận nguyên văn + một câu hỏi làm rõ, cùng cụm |
-| Không trả lời | Không có `=>` | Giữ treo; ghi vào §8 Câu hỏi mở |
+| Câu hỏi xen giữa | Dòng người làm thêm không có `=>`, có ý hỏi | Trả lời ngay dưới dòng đó; nếu không được sửa file cũ thì trả lời ở mục **Trả lời câu hỏi ở file trước** của file mới |
+| Ghi chú | Dòng người làm thêm không có `=>`, chỉ là nhận xét/bổ sung | Ghi nhận nguyên văn; không suy thành phương án |
+| Không trả lời | Không có `=>` và không phải câu hỏi/ghi chú | Giữ treo; ghi vào §8 Câu hỏi mở |
 
 Không suy diễn phương án khi người làm chỉ nhận xét.
 
@@ -74,6 +77,7 @@ Không suy diễn phương án khi người làm chỉ nhận xét.
 
 Chỉ đóng khi checklist `DISCUSS_TEMPLATE.md` §4 đủ:
 
+- đã đọc toàn bộ file; mọi dòng người làm thêm (kể cả không có `=>`) đã được phân loại;
 - mọi câu trong cụm có `=>` + Ghi nhận;
 - quyết định đã khoá có mặt trong file task;
 - file thảo luận khai `**Task:**` + nguyên văn chủ đề;
@@ -84,6 +88,7 @@ Chỉ đóng khi checklist `DISCUSS_TEMPLATE.md` §4 đủ:
 
 ## Không được
 
+- Thay việc đọc toàn bộ file thảo luận bằng grep `=>` hoặc trích dòng.
 - Tạo plan, sửa code, hoặc sửa file task ngoài mục `Quyết định`.
 - Tự đổi `status`, tự đóng task, tự đóng câu hỏi.
 - Tự tạo task con hoặc task mới.

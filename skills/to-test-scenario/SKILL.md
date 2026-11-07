@@ -203,7 +203,7 @@ Dùng file chuẩn **`11_Testing/templates/scenario.md`**. Các field cụ thể
 | `priority` | `critical` / `high` / `medium` / `low` | Happy path = critical/high. Edge case = medium/low |
 | `type` | `happy-path` / `negative` / `edge-case` / `error-recovery` | |
 | `actor` | `user` / `guest` / `admin` / `system` | Customer feature = user. Webhook = system |
-| `status` | `draft` | Mới tạo luôn draft. User đổi thành `reviewed`/`approved` sau khi review |
+| `status` | `draft` | Mới tạo luôn draft. User đổi thành `reviewed`/`approved` sau khi review. Sửa nội dung file đang `approved` thì đặt lại `draft` ngay trong lần sửa. |
 | `matrix-ref` | `VM-ROW-1, VM-ROW-3` | Link tới row(s) trong validation matrix |
 | `tags` | `[{feature}, {group}, {type}]` | 3 tags: feature + action group + type |
 
@@ -254,3 +254,4 @@ Người dùng review và bổ sung trước khi approve.
 5. **FE-only action vẫn worth scenario** — Nếu action là prerequisite để thực hiện main action, nó quan trọng. VD: không có item OK thì không submit được.
 6. **Không tạo scenario cho bug FE** — Nếu FE có bug (VD: missing error code handler), ghi backlog, không tạo scenario cho behavior sai.
 7. **1 scenario = 1 file** — Không gộp. Dễ review, dễ maintain, dễ link từ matrix.
+8. **Không phụ thuộc số lượng hiện tại** — Scenario mô tả chức năng bằng ngôn ngữ không phụ thuộc số lượng hiện tại: khi thêm hoặc bớt trường, mục hay nhóm, scenario vẫn đúng và không phải sửa lại. Hệ quả: không liệt kê số đếm hay danh sách cố định; chỉ giữ số khi con số chính là luật (VD: mã 1–32 ký tự).
