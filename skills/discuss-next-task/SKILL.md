@@ -1,6 +1,6 @@
 ---
 name: discuss-next-task
-description: Mở một file thảo luận mới cho task — đọc phản hồi ở file trước, ghi quyết định vào file task, tạo discuss-<N+1>-t<n>.md theo DISCUSS_TEMPLATE.md. Use when the user answers in a discuss file and chooses to open the next discussion file.
+description: Mở một file thảo luận mới cho task — đọc phản hồi ở file trước, ghi quyết định về task bằng `decision_record`, tạo discuss-<N+1>-t<n>.md theo DISCUSS_TEMPLATE.md. Use when the user answers in a discuss file and chooses to open the next discussion file.
 ---
 
 # Skill: `discuss-next-task`
@@ -14,11 +14,12 @@ Người làm đã trả lời trong file thảo luận và chọn mở file ti�
 ## Bước 1 — Nạp
 
 - Đọc `discuss-task` để lấy luật chung (Nguyên tắc · Bước 3 · Bước 4 · Không được).
-- Đọc **toàn bộ** file thảo luận trước và file task (mục tiêu, phạm vi, chủ đề mở, quyết định, thảo luận); không grep `=>` thay cho việc đọc.
+- Đọc **toàn bộ** file thảo luận trước; không grep `=>` thay cho việc đọc.
+- Đọc task **từ store**: `task_get(ref)` (mục tiêu, phạm vi, chủ đề mở, thảo luận) + `decision_list(ref)`; không đọc `05-mvp/tasks/*.md`.
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 
-Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `Quyết định` của file task; file thảo luận **chỉ trỏ** `T-<n>/D-<k>`; chủ đề mới thêm **một dòng** vào mục `Chủ đề còn mở` của task (không kèm câu hỏi, không kèm link), chủ đề đã rõ thì rút ra.
+Theo `discuss-task` Bước 4: mỗi câu đã chốt gọi `decision_record(ref, text, source)` — store cấp `D-<k>`, tool trả `ref: "T-<n>/D-<k>"`; file thảo luận **chỉ trỏ** `ref` đó. Chủ đề mới thêm **một dòng** vào mục `Chủ đề còn mở` (không kèm câu hỏi, không kèm link) bằng `task_update(patch: { body_md })`; chủ đề đã rõ thì rút ra cũng bằng `task_update`.
 
 ## Bước 3 — Tạo file mới
 
@@ -33,16 +34,16 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 
 ## Bước 4 — Cập nhật task
 
-- Không sửa mục `Thảo luận` của task: nó là một dòng cố định trỏ folder; file mới chỉ cần khai `**Task:** T-<n>`.
-- Không đổi `status` của task.
+- Không sửa dòng `## Thảo luận` trong `body_md` của task: nó là một dòng cố định trỏ folder; file mới chỉ cần khai `**Task:** T-<n>`.
+- Không đổi `status` của task (chỉ `task_update` khi người làm bảo).
 
 ## Bước 5 — Kiểm
 
 - [ ] Đã đọc toàn bộ file thảo luận trước (không chỉ grep `=>`); mọi dòng người làm thêm đã được phân loại.
 - [ ] Mỗi `=>` đã phân loại và ghi nhận.
-- [ ] Quyết định đã khoá có `D-<k>` trong file task.
+- [ ] Quyết định đã khoá đã ghi về store (`decision_list` thấy `D-<k>`).
 - [ ] File mới chỉ trỏ quyết định, không chép.
-- [ ] File mới khai `**Task:** T-<n>`; mục `Thảo luận` của task không đổi.
+- [ ] File mới khai `**Task:** T-<n>`; dòng `## Thảo luận` trong task không đổi.
 - [ ] Tên file đúng mẫu `discuss-<N+1>-t<n>.md` — số lấy từ số lớn nhất trong folder, đuôi `-t<n>` khớp task.
 - [ ] Chat 1–2 dòng.
 

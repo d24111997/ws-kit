@@ -1,6 +1,6 @@
 ---
 name: discuss-continue-task
-description: Tiếp tục thảo luận ngay trong file đang mở — thêm mục Ghi nhận, khoá quyết định vào file task, thêm cụm câu hỏi tiếp. Use when the user answers in a discuss file and chooses to keep discussing in that same file.
+description: Tiếp tục thảo luận ngay trong file đang mở — thêm mục Ghi nhận, khoá quyết định về task bằng `decision_record`, thêm cụm câu hỏi tiếp. Use when the user answers in a discuss file and chooses to keep discussing in that same file.
 ---
 
 # Skill: `discuss-continue-task`
@@ -14,11 +14,12 @@ Người làm đã trả lời trong file thảo luận và chọn tiếp trong 
 ## Bước 1 — Nạp
 
 - Đọc `discuss-task` để lấy luật chung.
-- Đọc **toàn bộ** file thảo luận đang mở và file task; không grep `=>` thay cho việc đọc.
+- Đọc **toàn bộ** file thảo luận đang mở; không grep `=>` thay cho việc đọc.
+- Đọc task **từ store**: `task_get(ref)` + `decision_list(ref)` — không đọc `05-mvp/tasks/*.md` (chỉ còn giá trị lịch sử).
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 
-Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `Quyết định` của file task; file thảo luận **chỉ trỏ** `T-<n>/D-<k>`; chủ đề mới thêm **một dòng** vào mục `Chủ đề còn mở` của task (không kèm câu hỏi, không kèm link), chủ đề đã rõ thì rút ra.
+Theo `discuss-task` Bước 4: mỗi câu đã chốt gọi `decision_record(ref, text, source)` — store cấp `D-<k>`, tool trả `ref: "T-<n>/D-<k>"`; file thảo luận **chỉ trỏ** `ref` đó. Chủ đề mới thêm **một dòng** vào mục `Chủ đề còn mở` (không kèm câu hỏi, không kèm link) bằng `task_update(patch: { body_md })`; chủ đề đã rõ thì rút ra cũng bằng `task_update`.
 
 ## Bước 3 — Ghi tiếp vào chính file đang mở
 
@@ -31,7 +32,7 @@ Theo `discuss-task` Bước 4: mỗi câu đã chốt thêm `D-<k>` vào mục `
 
 - [ ] Đã đọc toàn bộ file thảo luận (không chỉ grep `=>`); mọi dòng người làm thêm đã được phân loại.
 - [ ] Mỗi `=>` đã phân loại và ghi nhận.
-- [ ] Quyết định đã khoá có `D-<k>` trong file task.
+- [ ] Quyết định đã khoá đã ghi về store (`decision_list` thấy `D-<k>`).
 - [ ] File thảo luận chỉ trỏ quyết định, không chép.
 - [ ] Câu treo nằm ở §8 hoặc có câu hỏi làm rõ.
 - [ ] Chat 1–2 dòng.
