@@ -15,16 +15,12 @@ Hệ quả với agent: đọc tiến độ bằng `task_list` / `task_get`, ghi
 ## 2. Hợp đồng tool
 
 6 tool: `task_list` · `task_get` · `task_create` · `task_update` · `decision_record` · `decision_list`.
-Hai điểm quyết định cách agent gọi:
 
-- **Đọc theo mục** — `task_get(ref, sections: ["Mục tiêu", "Chủ đề còn mở"])` trả đúng các mục đó và **không** trả `body_md`; tên mục không tồn tại thì bỏ qua; `sections: []` là không lọc. Chỉ đọc cả body khi cần in ra.
-- **Ghi theo mục** — `task_update(patch: { body_sections: [{ section, op, items }] })` với `op` là `replace` · `append` · `remove` · `toggle`. Một lời gọi là một transaction (tất cả hoặc không), trả `sections_after`. `remove`/`toggle` phải khớp **đúng một** dòng; khớp 0 hoặc nhiều hơn 1 là lỗi.
+Kit nêu **việc cần làm với tool**, không chép chữ ký tham số: store có thể đổi tham số mà không đổi tên tool — chép vào kit thì mỗi lần store đổi lại phải sửa kit. Hình dạng tham số theo tài liệu của instance đang dùng.
 
-Sửa một dòng thì gửi **một phép**, không gửi lại cả `body_md`: gửi cả body buộc agent mang theo toàn bộ thân task và ghi đè mù thay đổi của máy khác.
-
-Hai máy cùng sửa một task: gửi `expected_updated_at` đọc từ `task_get` trước — lệch thì store không ghi và trả `updated_at` thật.
-
-Trần một lời gọi: 50 phép · 200 dòng mỗi phép · 64 KB tổng `items` · tên mục 120 ký tự; `body_md` 256 KB; `task_get.sections` tối đa 50 mục mỗi lần đọc.
+- **Đọc** — `task_list` cho tiến độ · `task_get` cho một task (đọc được từng mục, không nhất thiết kéo cả thân) · `decision_list` cho quyết định (phân trang khi nhiều).
+- **Ghi** — `task_create` tạo task · `task_update` sửa task (sửa được từng mục, một lời gọi là một transaction; sửa một dòng thì không gửi lại cả thân task) · `decision_record` khoá quyết định.
+- **Nhiều máy cùng ghi** — store có khoá lạc quan: đọc trước khi ghi, lệch thì không ghi và báo lại.
 
 ## 3. Đường vào
 
