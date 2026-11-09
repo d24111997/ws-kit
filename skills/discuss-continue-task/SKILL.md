@@ -15,7 +15,7 @@ Người làm đã trả lời trong file thảo luận và chọn tiếp trong 
 
 - Đọc `discuss-task` để lấy luật chung.
 - Đọc **toàn bộ** file thảo luận đang mở; không grep `=>` thay cho việc đọc.
-- Đọc task **từ store**: `task_get` cho các mục cần — không kéo cả thân task; `decision_list` đọc theo trang khi nhiều quyết định. Không đọc file task kiểu cũ (nếu dự án còn giữ) — vị trí ghi ở `AGENTS.md` của repo.
+- Đọc task **từ store**: `task_get` cho các mục cần — không kéo cả thân task; `decision_list` đọc theo trang khi nhiều quyết định.
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 

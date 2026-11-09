@@ -20,7 +20,7 @@ description: Thảo luận có cấu trúc gắn với task của workspace — 
 
 Đọc theo thứ tự, dừng khi đủ:
 
-1. Task `T-<n>` **từ store TMS**: `task_get` cho các mục cần (mục tiêu · phạm vi · chủ đề còn mở) — đọc theo mục, không kéo cả thân task; `decision_list` cho quyết định đã ban hành, đọc theo trang khi task nhiều quyết định. Dự án còn giữ file task kiểu cũ (vị trí ghi ở `AGENTS.md` của repo) thì coi là lịch sử: không đọc, không sửa.
+1. Task `T-<n>` **từ store TMS**: `task_get` cho các mục cần (mục tiêu · phạm vi · chủ đề còn mở) — đọc theo mục, không kéo cả thân task; `decision_list` cho quyết định đã ban hành, đọc theo trang khi task nhiều quyết định.
 2. `DISCUSS_TEMPLATE.md` — khung file và checklist đóng cuộc.
 3. Chỉ những tư liệu task liệt kê, và chỉ phần cần cho chủ đề đang hỏi.
 
@@ -35,7 +35,7 @@ Task chưa có trong store → dừng và báo người làm; không tự tạo 
 | Người làm chọn mở file mới | Tạo `discuss-<N+1>-t<n>.md`, mở đầu bằng **Nối tiếp**: phản hồi đã nhận · `T-n/D-k` đã khoá · chỗ còn treo · lý do mở file |
 | Không rõ ý người làm | Hỏi đúng một câu: tiếp file này hay mở file mới |
 
-Skill **không** tự quyết chỗ ghi; hai đường vào là `discuss-continue-task` (tiếp file đang mở) và `discuss-next-task` (mở file mới). File thảo luận tự khai `**Task:** T-<n>`; dòng `## Thảo luận` nằm trong `body_md` của task và chỉ trỏ folder — **không sửa task** khi mở cuộc.
+Skill **không** tự quyết chỗ ghi; hai đường vào là `discuss-continue-task` (tiếp file đang mở) và `discuss-next-task` (mở file mới). File thảo luận tự khai `**Task:** T-<n>`; mục `Thảo luận` của task chỉ trỏ folder — **không sửa task** khi mở cuộc.
 
 ## Bước 3 — Viết câu hỏi theo cụm
 
