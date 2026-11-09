@@ -75,7 +75,7 @@ Thu hồi là **mềm**: dòng key giữ nguyên, chỉ đặt mốc thu hồi; 
 Task store là thành phần tuỳ chọn của workspace. Không có instance thì:
 
 1. Bỏ block `tms` khỏi config (hoặc để `"disabled": true`).
-2. Bỏ ba skill `discuss-task` · `discuss-continue-task` · `discuss-next-task` khỏi `~/Documents/21.AgentSkills` — chúng gọi tool không tồn tại, agent sẽ lặp lại lời gọi lỗi.
+2. Bỏ ba skill `discuss-task` · `discuss-continue-task` · `discuss-next-task` khỏi thư mục skill bạn dùng — chúng gọi tool không tồn tại, agent sẽ lặp lại lời gọi lỗi.
 3. Giữ nguyên phần còn lại: skill, agent, vault, plan/SCN không phụ thuộc task store.
 
 Đừng khai `url` giả để "cho đủ bộ": agent sẽ thử, fail, rồi coi như task không đọc được — tốn một vòng debug vô ích.

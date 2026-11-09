@@ -5,7 +5,7 @@ description: Thảo luận có cấu trúc gắn với task của workspace — 
 
 # Skill: `discuss-task`
 
-> Quy trình gốc: `TASK_SYSTEM.md` §5 · §6 · §7 · §8 · §9 · §10. Khung file: `DISCUSS_TEMPLATE.md`. Vị trí hai file này ghi ở `AGENTS.md` §0 của repo (HRIS: `08-task-system/`).
+> Quy trình gốc: `TASK_SYSTEM.md` §5 · §6 · §7 · §8 · §9 · §10. Khung file: `DISCUSS_TEMPLATE.md`. Vị trí hai file này ghi ở `AGENTS.md` §0 của repo dự án.
 
 ## Nguyên tắc
 

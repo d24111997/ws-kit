@@ -8,7 +8,7 @@
 
 | Tên | Path | Dùng cho |
 |---|---|---|
-| `vault` | `<ĐIỀN: /Users/<user>/Documents/<vault>` | docs dự án, specs, test plan, scenario, handover |
+| `vault` | `<ĐIỀN: đường dẫn vault>` | docs dự án, specs, test plan, scenario, handover |
 | `BE` | `<ĐIỀN: path repo backend>` | source backend |
 | `FE` | `<ĐIỀN: path repo frontend>` | source frontend |
 

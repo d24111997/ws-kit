@@ -4,11 +4,12 @@
 # Chi tiết: docs/00-workspace-conventions.md §7
 
 # Danh sách repo quản lý chung
+# Điền repo của bạn — ví dụ:
 WS_REPOS=(
-  ~/ws-kit
-  ~/Documents/Vault
-  ~/.config/opencode
-  ~/Documents/21.AgentSkills
+  # ~/<workspace>/<kit-clone>
+  # ~/.config/opencode
+  # <đường-dẫn-thư-mục-skill>
+  # <đường-dẫn-vault>
 )
 
 alias lg='lazygit'

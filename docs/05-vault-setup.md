@@ -7,8 +7,8 @@
 ## 1. Tạo vault
 
 ```bash
-cd ~/ws-kit
-./scripts/new-vault.sh "<Tên vault>"          # tạo ~/Documents/<Tên vault> + git init + commit đầu
+cd <clone-kit>
+./scripts/new-vault.sh "<Tên vault>"          # tạo <parent>/<Tên vault> + git init + commit đầu
 ```
 
 Vault skeleton gồm: taxonomy `00_TASKS_THIS_WEEK → 12_bug` (+ `04_Research`, `07_Infra`, `10_unclassified`), `_templates/` (7 template + `_Index.md`), `_diagrams/`, `_Index.md`, `11_Testing/` (templates test + `test-plan-general.md`), `AGENTS.md`.

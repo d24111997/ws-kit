@@ -79,7 +79,7 @@ Nếu có kết quả → có tool khác đã ghi config theo v1 (thường do c
 
 ### Skills không load
 
-- Kiểm tra `skills` array trong config trỏ đúng path (`~/Documents/21.AgentSkills`).
+- Kiểm tra `skills` array trong config trỏ đúng thư mục skill bạn dùng.
 - Kiểm tra từng skill có `SKILL.md` + frontmatter `description`.
 - Trong opencode: skill list chỉ hiện khi agent có permission `skill` + skill có description.
 

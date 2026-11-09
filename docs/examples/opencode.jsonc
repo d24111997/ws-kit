@@ -98,7 +98,7 @@
   },
 
   // ===== Skills (trỏ thẳng thư mục skill trong clone kit — xem docs/03 §2) =====
-  "skills": ["~/Documents/21.AgentSkills"],
+  "skills": ["<đường-dẫn-thư-mục-skill>"],
 
   // ===== Permissions =====
   // v2: mảng rule, last-match-wins; `bash` đổi tên thành `shell`.
