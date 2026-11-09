@@ -15,11 +15,11 @@ Người làm đã trả lời trong file thảo luận và chọn tiếp trong 
 
 - Đọc `discuss-task` để lấy luật chung.
 - Đọc **toàn bộ** file thảo luận đang mở; không grep `=>` thay cho việc đọc.
-- Đọc task **từ store**: `task_get(ref)` + `decision_list(ref)` — không đọc `05-mvp/tasks/*.md` (chỉ còn giá trị lịch sử).
+- Đọc task **từ store**: `task_get(ref, sections: ["Mục tiêu", "Phạm vi", "Chủ đề còn mở"])` — không kéo `body_md`; `decision_list(ref)` theo trang (`offset`/`limit`, mặc định 20). Không đọc `05-mvp/tasks/*.md`.
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 
-Theo `discuss-task` Bước 4: mỗi câu đã chốt gọi `decision_record(ref, text, source)` — store cấp `D-<k>`, tool trả `ref: "T-<n>/D-<k>"`; file thảo luận **chỉ trỏ** `ref` đó. Chủ đề mới thêm **một dòng** vào mục `Chủ đề còn mở` (không kèm câu hỏi, không kèm link) bằng `task_update(patch: { body_md })`; chủ đề đã rõ thì rút ra cũng bằng `task_update`.
+Theo `discuss-task` Bước 4: mỗi câu đã chốt gọi `decision_record(ref, text, source)` — store cấp `D-<k>`, tool trả `ref: "T-<n>/D-<k>"`; file thảo luận **chỉ trỏ** `ref` đó. Chủ đề mới thêm **một dòng** vào mục `Chủ đề còn mở` (không kèm câu hỏi, không kèm link) bằng `task_update(patch: { body_sections: [{ section: "Chủ đề còn mở", op: "append", items: ["- <chủ đề>"] }] })`; chủ đề đã rõ thì rút bằng `op: "remove"` trên đúng nguyên văn dòng cũ. Không gửi lại `body_md`.
 
 ## Bước 3 — Ghi tiếp vào chính file đang mở
 

@@ -20,7 +20,7 @@ description: Thảo luận có cấu trúc gắn với task của workspace — 
 
 Đọc theo thứ tự, dừng khi đủ:
 
-1. Task `T-<n>` **từ store TMS**: `task_get(ref: "T-<n>")` cho mục tiêu · phạm vi · trạng thái · phụ thuộc · chủ đề còn mở (trong `body_md`) và `decision_list(ref: "T-<n>")` cho các quyết định đã ban hành. Không đọc `05-mvp/tasks/*.md` — 35 file đó chỉ còn giá trị lịch sử, có banner, không sửa.
+1. Task `T-<n>` **từ store TMS**: `task_get(ref: "T-<n>", sections: ["Mục tiêu", "Phạm vi", "Chủ đề còn mở"])` — trả đúng các mục đó và **không** kéo `body_md`; và `decision_list(ref: "T-<n>")` cho các quyết định đã ban hành (`offset`/`limit`, mặc định 20 — task nhiều quyết định thì đọc theo trang). Không đọc `05-mvp/tasks/*.md` — 35 file đó chỉ còn giá trị lịch sử, có banner, không sửa.
 2. `DISCUSS_TEMPLATE.md` — khung file và checklist đóng cuộc.
 3. Chỉ những tư liệu task liệt kê, và chỉ phần cần cho chủ đề đang hỏi.
 
@@ -65,8 +65,8 @@ Không suy diễn phương án khi người làm chỉ nhận xét.
 
 ## Bước 5 — Khoá cụm, ghi về task, đồng bộ chủ đề
 
-- **Chủ đề mới**: cuộc mở ra một điểm chưa rõ chưa có trong mục `Chủ đề còn mở` → thêm **một dòng chủ đề** (bằng lời; không câu hỏi, không link tới file thảo luận) ngay khi mở cụm, bằng `task_update(ref: "T-<n>", patch: { body_md })` với **toàn bộ** `body_md` đã cập nhật.
-- **Chủ đề đã rõ** thì rút khỏi mục `Chủ đề còn mở` — cũng bằng `task_update(patch: { body_md })`; dấu vết nằm ở `D-<k>` và ở file thảo luận.
+- **Chủ đề mới**: cuộc mở ra một điểm chưa rõ chưa có trong mục `Chủ đề còn mở` → thêm **một dòng chủ đề** (bằng lời; không câu hỏi, không link tới file thảo luận) ngay khi mở cụm, bằng một phép trên mục: `task_update(ref: "T-<n>", patch: { body_sections: [{ section: "Chủ đề còn mở", op: "append", items: ["- <chủ đề>"] }] })` — không gửi lại `body_md`.
+- **Chủ đề đã rõ** thì rút khỏi mục `Chủ đề còn mở` — `body_sections` với `op: "remove"` trên **đúng nguyên văn** dòng cũ (khớp 0 hoặc nhiều hơn 1 dòng là lỗi); dấu vết nằm ở `D-<k>` và ở file thảo luận.
 - **Câu hỏi** ở lại trong cụm của file thảo luận — không chép câu hỏi vào task.
 
 - Khoá cụm → gọi **ngay** `decision_record(ref: "T-<n>", text: "<một câu thi hành được>", source: "discuss-<N> Q<x.y>")`. Store cấp `D-<n>` (max+1), không đánh tay, không dùng lại số; tool trả `{ n, ref: "T-<n>/D-<k>" }` — ghi đúng `ref` đó vào file thảo luận.
@@ -89,7 +89,7 @@ Chỉ đóng khi checklist `DISCUSS_TEMPLATE.md` §4 đủ:
 ## Không được
 
 - Thay việc đọc toàn bộ file thảo luận bằng grep `=>` hoặc trích dòng.
-- Tạo plan, sửa code, hoặc gọi `task_update` với trường ngoài `body_md`/`status`/`status_note` khi người làm chưa bảo.
+- Tạo plan, sửa code, hoặc gọi `task_update` với trường ngoài `body_md`/`body_sections`/`status`/`status_note` khi người làm chưa bảo.
 - Tự đổi `status`, tự đóng task, tự đóng câu hỏi.
 - Tự tạo task con hoặc task mới.
 - Ghi quyết định chỉ trong file thảo luận mà không gọi `decision_record`.

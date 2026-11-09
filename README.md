@@ -89,7 +89,7 @@ ws-kit/
 | [docs/04-secrets.md](docs/04-secrets.md) | Secrets + account connect |
 | [docs/05-vault-setup.md](docs/05-vault-setup.md) | Obsidian + 5 plugins + MCP |
 | [docs/06-troubleshooting.md](docs/06-troubleshooting.md) | Log paths, rollback, lỗi thường gặp |
-| [docs/07-task-store.md](docs/07-task-store.md) | Task store qua MCP `tms` (tuỳ chọn): 6 tool · key · đường ghi/đọc · lỗi |
+| [docs/07-task-store.md](docs/07-task-store.md) | Task store qua MCP `tms` (tuỳ chọn): 6 tool · đọc/ghi theo mục · key · đường ghi/đọc · lỗi |
 
 ## License
 
