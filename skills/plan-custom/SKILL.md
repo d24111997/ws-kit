@@ -29,8 +29,7 @@ Trước khi viết bất kỳ chữ nào trong plan, phải đọc đủ các n
 - Tin nhắn hiện tại của user
 
 ### 1B. Đọc project context
-- **AGENTS.md** ở thư mục gốc project — chứa tech stack, operational commands, workflow constraints, self-healing rules
-- **AGENTS.md** ở thư mục gốc project — hướng dẫn cho AI (v2 đọc AGENTS.md; repo cũ chỉ có CLAUDE.md thì đọc file đó)
+- **AGENTS.md** ở thư mục gốc project — chứa tech stack, operational commands, workflow constraints, self-healing rules (v2 đọc `AGENTS.md`; repo cũ chỉ có `CLAUDE.md` thì đọc file đó)
 - **README.md** (nếu có)
 
 Nếu không tìm thấy AGENTS.md, hỏi user "Project này có AGENTS.md không? Cho tôi đường dẫn."
