@@ -56,8 +56,8 @@ Key riêng không cần restart service — config `{file:...}` được đọc 
 ## 6. Verify MCP obsidian
 
 ```bash
-cd ~/ws-kit && ./scripts/verify.sh --vault ~/Documents/"<Tên vault>"
-# hoặc thủ công: mở opencode → gọi thử MCP obsidian đọc 1 note (vd _Index.md)
+# mở opencode → gọi thử MCP obsidian đọc 1 note (vd _Index.md)
+# key sai/thiếu → xem docs/06 §MCP
 ```
 
 ## 7. Commit

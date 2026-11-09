@@ -1,148 +1,110 @@
-# 03 — opencode Config (v2-native)
+# 03 — Config opencode: cần khối nào, vì sao, kiểm ra sao
 
-> Giải thích config `opencode.jsonc` trong kit — **render v2-native**, không dựa vào cơ chế migrate của v1.
-> Tham chiếu docs: https://opencode.ai/v2/docs/config
+> Kit **không ship config** và không pin phiên bản opencode. Trang này nói **cần những khối nào và để làm gì**; hình dạng cụ thể (tên key, giá trị) xem [`docs/examples/opencode.jsonc`](examples/opencode.jsonc) và docs chính thức của opencode.
+> Khi tên key trong trang này khác với file bạn đang chạy: **docs upstream + ví dụ thắng**, tên trong này chỉ để đọc hiểu.
 
 ---
 
-## 1. Vị trí file
+## 1. Nguyên tắc
 
-| File | Vị trí sau bootstrap | Vai trò |
+1. **Config là của máy bạn.** Kit không phát file này để cài, cũng không có bản "đúng" duy nhất — khác provider, khác model, khác đường dẫn skill là chuyện bình thường.
+2. **Đọc theo khối, không copy theo file.** Ví dụ trong kit gắn với provider/model của người viết; copy nguyên là cách nhanh nhất để có config sai.
+3. **Không secret trong config.** Chỉ tham chiếu (`{env:...}` hoặc `{file:...}`); giá trị để ngoài repo — xem [docs/04](04-secrets.md).
+
+## 2. Các khối cần có
+
+| Khối | Để làm gì | Không có thì sao |
 |---|---|---|
-| `opencode.jsonc` | `~/.config/opencode/opencode.jsonc` | Config chính (providers, MCP, permissions, skills...) |
-| `cli.json` | `~/.config/opencode/cli.json` | TUI plugins (oc-tps) |
-| `AGENTS.md` | `~/.config/opencode/AGENTS.md` | Hướng dẫn global cho LLM |
-| `agents/`, `commands/`, `plugins/`, `references/` | `~/.config/opencode/` | Auto-discovery — không cần khai báo |
+| Model + agent mặc định | chọn model và agent khi mở opencode | opencode hỏi, hoặc dùng mặc định của nó |
+| Providers | khai provider/model bạn dùng, kèm biến môi trường | model không resolve |
+| Skills | chỉ đường dẫn tới skill | skill không hiện |
+| Permissions | chặn/hỏi những lệnh nguy hiểm (`git push`, `rm -rf`…) | chạy được mọi thứ — kể cả thứ bạn không muốn |
+| MCP servers | tool ngoài (obsidian, serena, headroom, chrome, task store) | không có tool tương ứng |
 
-v2 chỉ đọc `AGENTS.md` (không fallback `CLAUDE.md`); field `instructions` trong config là **inert** (được nhận nhưng không load).
+Mỗi khối dưới đây là *cần gì*, không phải *viết thế nào*.
 
-> Lưu ý `$schema`: giá trị `https://opencode.ai/config.json` giữ theo docs v2 — nhưng schema public hiện có thể **trễ hơn v2**, nên editor có thể gạch đỏ các key v2 (`providers`, `permissions`, `mcp.servers`, `codemode`...). Nếu gặp: tạm tắt validation cho file này — **đừng "sửa ngược" về format v1**.
+### Model + agent mặc định
 
-## 2. Các key chính trong config
+Model tham chiếu dạng `provider/model`, có thể kèm biến thể (`#variant`) khi agent/command cần cấu hình riêng. Provider đến từ **subscription account** thì phải `/connect` trước — xem [docs/04](04-secrets.md) §3.
 
-### Model + default agent
-
-```jsonc
-"model": "opencode-go/deepseek-v4.1-flash",
-"default_agent": "jack",
-```
-
-- Model refs dạng `provider/model` (+ `#variant` khi agent/command chọn variant).
-- `opencode-go` đến từ **account connect** (`/connect` → OpenCode Go). Nếu dùng provider khác → đổi refs (xem `docs/04-secrets.md`).
+Dùng provider khác người viết ví dụ → **remap mọi tham chiếu model**, gồm model gốc trong config và `model:` ở frontmatter từng agent. Đây là bước bắt buộc, không phải tuỳ chọn.
 
 ### Providers
 
-| Provider | Package | Ghi chú |
-|---|---|---|
-| `openrouter` | (catalog native) | secret `OPENROUTER_API_KEY`; model DeepSeek V4 alias + reasoning |
-| `commandcode` | `@opencode/ai/providers/openai-compatible` | secret `COMMANDCODE_API_KEY`; baseURL riêng |
-| `headroom` | `@opencode/ai/providers/openai-compatible` | proxy local `http://127.0.0.1:8787/v1` |
-| `opencode-go` | (account) | chỉ override `models.variants` — xem §3 |
-
-Mapping từ v1: `npm` → `package`; `options.apiKey` inline → `env: ["VAR"]`; `options.baseURL` → `settings.baseURL`; model `id` → `modelID`; `interleaved` → `compatibility.reasoningField`; `reasoningEffort` → `settings.reasoningEffort`; `thinking` → `body.thinking`.
+Mỗi provider cần đúng **loại** (native của client, hay qua package openai-compatible) và đúng **địa chỉ** nếu là proxy/gateway; secret đi qua env hoặc file. Không có cách viết chung cho mọi provider — đọc mục provider đó trong docs upstream, rồi đối chiếu khối tương ứng trong file ví dụ.
 
 ### Skills
 
-```jsonc
-"skills": ["~/Documents/21.AgentSkills"],
-```
+Đây là **mảng đường dẫn**. Ba điều cần nhớ:
 
-- Hỗ trợ `~/` path; bootstrap tự cập nhật nếu bạn dùng `--skills-path` khác.
-- Ngoài ra v2 auto-discover `~/.config/opencode/skills/` — kit không dùng chỗ này (giữ skills tập trung 1 nơi).
+- Trỏ thẳng thư mục skill trong clone kit vào mảng này — sửa kit là máy thấy ngay, không có bản sao để lệch.
+- Skill riêng của máy/dự án đặt ở thư mục khác, thêm một phần tử nữa. Đừng trộn vào clone kit.
+- Nếu client của bạn tự quét một thư mục skill mặc định, biết là có — nhưng kit không dựa vào nó.
 
 ### Permissions
 
-v2 dùng **mảng rule** `{action, resource, effect}`, last-match-wins; `bash` đổi tên thành `shell`:
+Dạng **danh sách rule**, áp dụng theo thứ tự, rule sau thắng. Action bao gồm đọc/ghi file, shell, subagent, skill, web, `external_directory`, và từng tool của MCP server. Tên action và tên field **đổi giữa các phiên bản** — lấy tên đúng từ docs upstream hoặc từ file ví dụ đang chạy được.
 
-```jsonc
-"permissions": [
-  { "action": "shell", "resource": "git commit *", "effect": "ask" },
-  { "action": "shell", "resource": "git push *", "effect": "deny" }
-]
-```
-
-- Base policy mặc định của v2: allow-all + `external_directory: ask` + `.env` reads ask.
-- Action list: `read`, `edit`, `glob`, `grep`, `shell`, `subagent`, `skill`, `question`, `webfetch`, `websearch`, `external_directory`, `<server>_<tool>`, `execute`.
-- Agents có thể khai báo `permissions` riêng trong frontmatter (vd 4 subagent reviewer có `edit: ask`).
+Tối thiểu nên có: chặn `git push`, hỏi trước khi ghi ra ngoài thư mục làm việc. Agent có thể khai permission riêng trong frontmatter (ví dụ subagent reviewer đặt `edit: ask`).
 
 ### MCP servers
 
-```jsonc
-"mcp": { "servers": { "<tên>": { "type": "local", "command": [...], "codemode": false } } }
-```
+Mỗi server là một mục: loại (tiến trình local hay remote HTTP), lệnh/URL, biến môi trường hoặc header.
 
-- `enabled: true` (v1) → bỏ field; muốn tắt → `disabled: true`.
-- `{env:VAR}` dùng được trong `environment`/`headers`; `{file:path}` dùng được cùng chỗ — kit dùng `{file:}` cho key vì service có thể spawn không có env (docs/04 §2).
-- 5 server trong kit: `tms` (remote HTTPS + `Authorization` từ `~/.secrets/tms-api-key`), `obsidian` (npx obsidian-mcp-server + env), `chrome-devtools` (npx + autoConnect), `headroom` (PATH-based), `serena` (uvx + `--open-web-dashboard False`).
-- `tms` là server duy nhất cần **một instance thật** phía server: kit ship hình dạng config, không ship task store. Không có instance → để `disabled: true` hoặc bỏ block, và bỏ 3 skill `discuss-*` khỏi `21.AgentSkills` (chúng gọi `task_get`/`decision_record`). Xem `docs/07-task-store.md`.
-- Đường ghi và đường đọc là hai endpoint khác nhau: ghi ở `/write/mcp` (bearer key), đọc SQL thô ở `/sse` + `/messages/`. Đừng thêm tiền tố `/read/` — sẽ `404`.
+- Key cho MCP thường phải là **file** chứ không phải env: service có thể được spawn không kèm env của shell bạn → biến rỗng → server `Connection closed`. Xem [docs/04](04-secrets.md) §2.
+- Server remote cần **một instance thật** phía server. Kit ship hình dạng, không ship instance; không có instance thì đừng khai (hoặc tắt tường minh) — chi tiết ở [docs/07](07-task-store.md).
+- Đường ghi và đường đọc có thể là hai endpoint khác nhau. Đừng tự thêm tiền tố đoán ra — sai là `404`.
 
-## 3. Model variants (reasoning + temperature)
+## 3. Biến thể model (reasoning + temperature)
 
-6 subagent cần reasoning config (như v1). v2 không còn `temperature`/`reasoningEffort` trong agent frontmatter → chuyển thành **variants** trên model:
+Agent cần cấu hình reasoning/nhiệt độ thì khai thành **biến thể trên model**, không nhét vào frontmatter agent. Bộ biến thể trong kit:
 
-```jsonc
-"opencode-go": {
-  "models": {
-    "deepseek-v4.1-flash": {
-      "variants": [
-        { "id": "high",      "settings": { "reasoningEffort": "high" }, "body": { "thinking": {"type":"enabled","budgetTokens":32000}, "temperature": 0.2 } },
-        { "id": "high-warm", "settings": { "reasoningEffort": "high" }, "body": { "thinking": {"type":"enabled","budgetTokens":32000}, "temperature": 0.3 } },
-        { "id": "warm",      "body": { "temperature": 0.3 } },
-        { "id": "creative",  "body": { "temperature": 0.4 } }
-      ]
-    }
-  }
-}
-```
+| Biến thể | Ai dùng | Ý định |
+|---|---|---|
+| `#high` | planner · impl-reviewer · code-reviewer · test-engineer · security-auditor | reasoning cao, nhiệt độ thấp — việc cần chính xác |
+| `#high-warm` | developer | reasoning cao, ấm hơn — viết code |
+| `#warm` | jack · anna · bard · liuliu | mặc định |
+| `#creative` | rei | sáng tạo |
 
-| Variant | Agent dùng |
-|---|---|
-| `#high` | planner, impl-reviewer, code-reviewer, test-engineer, security-auditor |
-| `#high-warm` | developer |
-| `#warm` | jack, anna, bard, liuliu |
-| `#creative` | rei |
+Đây là **thiết kế của kit**, không phải yêu cầu của client: tên biến thể bạn tự đặt, miễn agent trỏ đúng tên. Provider không nhận một khoá con nào đó thì bỏ khoá ấy; phần còn lại vẫn chạy.
 
-> ⚠️ Verify trên máy mới: nếu provider `opencode-go` không nhận model override → kiểm tra bằng cách chạy 1 agent có variant. `thinking` key là provider-specific — nếu không được nhận, chỉ `reasoningEffort` vẫn hoạt động.
+## 4. Code Mode — vì sao kit tắt
 
-## 4. Code Mode — vì sao `codemode: false`
+**Code Mode** gom tool của mỗi MCP server sau một tool `execute`: model viết JS gọi tool, chỉ trả kết quả cuối → tiết kiệm context.
 
-**Code Mode** (mặc định ON trong v2): thay vì expose từng MCP tool riêng lẻ, v2 gom tools của mỗi server sau **1 tool `execute`** — model viết JS giới hạn, gọi tools qua `tools.<server>.<tool>(...)`, chỉ trả kết quả cuối về context (tiết kiệm context).
+Kit tắt cho các server vì:
 
-**Vì sao kit tắt (`codemode: false`) cho cả 4 server:**
+1. Agent hiện tại gọi tool trực tiếp theo tên (`serena_*`, `obsidian_*`) — dưới Code Mode phải viết JS, sai cách gọi.
+2. Plugin `serena-reminder` đếm tool call theo tên — dưới Code Mode chỉ thấy `execute` → plugin vô hiệu.
+3. Giữ hành vi giống bản trước để agent/plugin hoạt động đúng thiết kế.
 
-1. **Agents hiện tại reference tool trực tiếp** (`serena_find_symbol`, `obsidian_*`) — dưới Code Mode phải viết JS trong `execute` → sai cách gọi.
-2. **Plugin `serena-reminder`** đếm tool call theo tên (`serena_*`, `read`, `grep`) — dưới Code Mode chỉ thấy tool `execute` → plugin vô hiệu.
-3. Parity với hành vi v1 → mọi agent/plugin hoạt động đúng như thiết kế.
+Muốn thử Code Mode: bật cho **một** server, rồi sửa cách agent gọi tool của server đó.
 
-> Muốn thử Code Mode: xoá `"codemode": false` của server tương ứng. Chấp nhận phải cập nhật lại cách agents gọi tool.
+## 5. Agent · Command · Plugin · AGENTS.md
 
-## 5. Agents / Commands / Plugins (auto-discovery)
+Client đọc những thứ này từ những chỗ nó quy định — không phải từ kit. Điều cần biết:
 
-- Agents: `~/.config/opencode/agents/*.md` — frontmatter v2 (`description`, `mode`, `model` (+`#variant`), `permissions`, `steps`...). **KHÔNG dùng** `temperature`, `top_p`, `prompt`, `permission` (object), `tools`, `disable`, `maxSteps` (legacy v1).
-- Commands: `~/.config/opencode/commands/*.md` — frontmatter: `description`, `agent`, `model`, `subagent`.
-> Ghi chú `subagent` tool (v2): param key (`agent`, `description`, `prompt`, `sessionID`) được suy luận từ docs prose — nên xác nhận 1 lần trên máy v2 thật (`opencode` TUI: hỏi agent spawn thử 1 subagent).
+- **Agent**: frontmatter khai `description`, `mode`, `model` (+`#variant`), `permissions`. Field cũ của phiên bản trước (`temperature`, `tools`, `prompt`, `maxSteps`…) không dùng nữa; tên field đổi thì theo docs upstream.
+- **Command**: frontmatter khai `description`, `agent`, `model`, `subagent`.
+- **Plugin**: file local, tự được nạp từ thư mục plugin; API của client đổi giữa các phiên bản → đối chiếu docs, đừng sửa mò.
+- **AGENTS.md**: hướng dẫn global cho LLM. Một số client chỉ đọc `AGENTS.md`, không fallback `CLAUDE.md`; khối `instructions` trong config có thể **không** được load — kiểm bằng cách hỏi agent một rule trong đó.
 
-- Plugins local: `~/.config/opencode/plugins/*.ts` — **auto-discovered**; viết theo API v2: `Plugin.define({id, setup})` + `ctx.tool.hook(...)` / `ctx.shell.hook(...)`, import từ `@opencode/plugin`. Kit ship 2 plugin đã port v2 (`rtk.ts`, `serena-reminder.ts`).
+Không chắc một field có được nhận không → kiểm bằng hành vi: chạy agent, xem nó có làm đúng điều bạn khai.
 
-## 6. Verify
+## 6. Kiểm
 
 ```bash
-opencode --version            # >= 2.0.x
+opencode --version            # in ra được version
 opencode service status
-opencode mcp list             # obsidian / serena / headroom / chrome-devtools
-opencode plugin list          # rtk / serena-reminder
-opencode debug paths          # log ~/.local/share/opencode/log/opencode.log ...
+opencode mcp list             # các server bạn khai
+opencode plugin list          # các plugin bạn cài
+opencode debug paths          # log/config/data
 ```
 
-Check không lẫn format v1:
+Nếu client của bạn hỗ trợ kiểm schema config: chạy nó, đừng dựa vào editor. Editor có thể gạch đỏ key hợp lệ vì schema public trễ hơn bản client — khi đó **tắt validation cho file này**, đừng "sửa ngược" config về dạng cũ.
 
-```bash
-grep '"enabled"\|@ai-sdk' ~/.config/opencode/opencode.jsonc   # kỳ vọng: không có kết quả
-```
+## 7. Đánh đổi có ý thức
 
-## 7. Known trade-offs (có ý thức)
-
-- **Supply chain unpinned:** `npx -y obsidian-mcp-server` (không pin version), `chrome-devtools-mcp@latest`, `uvx ... git+https://github.com/oraios/serena` (branch mặc định), `oc-tps@latest` — luôn chạy bản mới nhất của bên thứ ba. Muốn chặt hơn: pin version/tag cụ thể trong config + `cli.json`.
-- **`OBSIDIAN_VERIFY_SSL: "false"`** — bỏ TLS verify cho Local REST API (chỉ dùng trên localhost; nếu đổi host thì bật lại).
-- **Permissions base = allow-all** (mặc định của v2) + 5 rule hạn chế git/ssh. Muốn chặt hơn: thêm `deny` cho lệnh phá huỷ phổ biến (`rm -rf /*`, `curl * | sh`) và `ask` cho `gh pr create` / `gh release`.
+- **Supply chain không pin:** MCP server cài bằng `npx`/`uvx` thường chạy bản mới nhất của bên thứ ba. Muốn chặt hơn: pin version/tag cụ thể.
+- **TLS verify tắt cho MCP local** (Obsidian Local REST API trên localhost): đổi host thì bật lại.
+- **Permissions nền là allow-all** + vài rule hạn chế. Muốn chặt hơn: thêm `deny` cho lệnh phá huỷ phổ biến và `ask` cho thao tác publish/merge.

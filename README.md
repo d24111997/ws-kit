@@ -1,121 +1,91 @@
 # ws-kit
 
-> **Template repo** — dựng workspace opencode v2 hoàn chỉnh trên máy macOS mới.
-> Clone repo → đọc README → làm theo (kể cả để LLM tự chạy) → có ngay môi trường hoạt động.
+> **Nguồn chuẩn của skill + cách dựng một workspace chuẩn** (opencode, Obsidian, task store).
+> Kit **không cài gì lên máy bạn**: nó chứa skill, hướng dẫn và ví dụ. Máy mới đọc rồi tự dựng — hoặc để agent đọc và dựng.
 
 ---
 
-## ws-kit gồm gì
+## Kit chứa gì
 
-| Thành phần | Nội dung |
+| Thành phần | Kit cho gì |
 |---|---|
-| **opencode v2 config** | `opencode.jsonc` v2-native: providers (openrouter/commandcode/headroom/opencode-go), MCP servers, permissions, model variants |
-| **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 7 commands |
-| **Skills** | 18 skill tự viết (discuss-task, plan-custom, test-driven-development, ...) |
-| **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
-| **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + task store TMS (MCP remote, tuỳ chọn) + tmux/lazygit (git đa repo) |
-| **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |
-| **Scripts** | `bootstrap-macos.sh` (kit → máy) · `capture.sh` (máy → kit, mặc định dry-run) · `new-vault.sh` · `verify.sh` |
-| **Snippets** | `zsh-ws.zsh` — helper git đa repo (lazygit + tmux: `lgall`/`wsst`) |
+| **Skills** | 18 skill (`discuss-*`, `plan-custom`, `test-driven-development`, `to-test-scenario`…) — bản generic, không gắn dự án |
+| **Hướng dẫn** | `docs/00` → `docs/07`: workspace convention, cài base tools, headroom, config, secrets, vault, troubleshooting, task store |
+| **Ví dụ tham chiếu** | `docs/examples/opencode.jsonc` (config) + `docs/examples/opencode/` (agents · commands · plugins · references · `cli.json` · `package.json`) — **để đọc, không để cài** |
+| **Vault skeleton** | `vault-template/`: taxonomy 00→12 + templates + `.obsidian` config |
+| **Script** | `scripts/new-vault.sh` — tạo vault mới từ `vault-template/` |
+| **Snippets** | `snippets/zsh-ws.zsh` — helper git đa repo (lazygit + tmux: `lgall`/`wsst`) |
 
-## Yêu cầu
+## Workspace chuẩn cần gì
 
-macOS + Xcode Command Line Tools + Homebrew. Chi tiết: [docs/01-base-install.md](docs/01-base-install.md).
+Kit **nêu** danh sách; cách đưa từng thứ lên máy là việc của bạn (hoặc agent). Không có lệnh cài chung, không quy định đường dẫn trên máy.
 
-## Cài đặt (P0 → P8)
+| Cần | Để làm gì |
+|---|---|
+| opencode | runtime |
+| Config (`opencode.jsonc`) | providers · MCP servers · permissions · skills path |
+| `agents/` · `commands/` | agent + slash command |
+| `plugins/` (+ deps) | `rtk.ts` (tiết kiệm token) · `serena-reminder.ts` |
+| `references/` | checklist mà agent đọc khi cần |
+| `AGENTS.md` | hướng dẫn global cho LLM |
+| Skills | bộ skill dùng chung |
+| Vault | nơi làm việc, tài liệu dự án |
+| Tool ngoài | `brew` · `uv` · `pnpm` · `gh` (và tuỳ chọn: `tmux`, `lazygit`, `jq`, `gitleaks`) |
 
-```bash
-# P0 — tiền đề: brew, git identity, gh auth login, ~/.local/bin trong PATH (xem docs/01)
+Chi tiết từng mục + cách tự kiểm: [docs/01-base-install.md](docs/01-base-install.md). Tick theo [CHECKLIST.md](CHECKLIST.md).
 
-# P1 — base tools
-brew install node uv git pnpm gh gitleaks
-brew install --cask obsidian google-chrome
-brew install tmux lazygit      # (khuyến nghị) git workflow đa repo — docs/00 §7
+## Bắt đầu
 
-# P2 — opencode v2
-brew update && brew install anomalyco/tap/opencode-v2
+1. Đọc [docs/00-workspace-conventions.md](docs/00-workspace-conventions.md) — quy ước workspace.
+2. Cài base tools + opencode: [docs/01](docs/01-base-install.md) · headroom + rtk: [docs/02](docs/02-headroom.md).
+3. Viết config của bạn — mở [docs/examples/opencode.jsonc](docs/examples/opencode.jsonc) để xem hình dạng, đọc [docs/03](docs/03-opencode-config.md) để biết cần khối nào và vì sao. **Không copy nguyên file** — nó gắn với provider/model của người viết.
+4. Secrets: [docs/04](docs/04-secrets.md). Vault: [docs/05](docs/05-vault-setup.md) (+ `./scripts/new-vault.sh "<Tên vault>"`).
+5. Task store qua MCP (tuỳ chọn): [docs/07](docs/07-task-store.md).
+6. Chạy `opencode` trong một repo → kiểm agent/skill nạp đúng.
 
-# P3 — headroom + rtk (⚠️ đúng thứ tự, đúng lệnh — xem docs/02)
-uv tool install headroom-ai
-headroom install apply --providers manual    # KHÔNG dùng `auto`/`--scope provider`
-headroom doctor
-which rtk || brew install rtk
+## Dùng skill của kit
 
-# P4 — config + skills
-git clone <URL-repo-này> ~/ws-kit
-cd ~/ws-kit && ./scripts/bootstrap-macos.sh
+Skill trong `skills/` là **nguồn chuẩn**. Không cần chép ra chỗ khác: khai thẳng đường dẫn thư mục skill trong clone vào mảng `skills` của config, ví dụ:
 
-# P5 — secrets + account (xem docs/04)
-mkdir -p ~/.secrets && touch ~/.secrets/opencode.env && chmod 600 ~/.secrets/opencode.env
-# điền keys + source trong ~/.zshenv; mở opencode → /connect
-
-# P6 — vault (xem docs/05)
-./scripts/new-vault.sh "<Tên vault>"
-# Obsidian → Open folder as vault → cài 5 plugins → bật Local REST API (27123)
-
-# P7 — verify
-./scripts/verify.sh --vault ~/Documents/"<Tên vault>"
-
-# P8 — first run
-cd ~/<repo-bất-kỳ> && opencode     # thử /plan-custom
+```jsonc
+"skills": ["<đường-dẫn-clone>/skills"]
 ```
 
-> 📋 Checklist đầy đủ sau khi cài: [CHECKLIST.md](CHECKLIST.md)
-
-## Giữ kit đồng bộ với máy
-
-`bootstrap-macos.sh` chạy một chiều kit → máy. Khi bạn sửa agent/skill ngay trên máy, dùng chiều ngược lại:
-
-```bash
-./scripts/capture.sh            # dry-run: xem sẽ đổi gì
-./scripts/capture.sh --apply    # ghi thật vào kit
-cd ../<kit> && git diff --stat  # review rồi mới commit
-```
-
-- Hoàn toàn không sync: `opencode/AGENTS.md` (kit là template placeholder), `opencode.jsonc`, `cli.json`, `package.json`, `vault-template/`, `docs/`.
-- Skill cá nhân, không muốn lên kit: thêm tên vào `.kitignore`.
-- `capture.sh` mặc định **không xoá** skill trong kit mà máy không có; thêm `--prune-skills` nếu muốn xoá theo máy.
+Kit sửa thì máy thấy ngay — không có bản sao để lệch. Skill riêng của máy/dự án để ở thư mục khác, thêm một phần tử nữa vào mảng. Kit không quản thư mục skill riêng của bạn.
 
 ## Cấu trúc repo
 
 ```text
 ws-kit/
 ├─ README.md / CHECKLIST.md / LICENSE
-├─ docs/                    # 00→06: conventions, install, headroom, config, secrets, vault, troubleshooting
-├─ opencode/                # → copy vào ~/.config/opencode (bootstrap lo phần này)
-│  ├─ opencode.template.jsonc   # config v2-native (đổi tên → opencode.jsonc khi cài)
-│  ├─ cli.json                  # TUI plugin (oc-tps)
-│  ├─ AGENTS.md                 # hướng dẫn global (bản sạch)
-│  ├─ package.json              # dependency @opencode/plugin (cho plugin local)
-│  ├─ agents/                   # 11 agents + references/ (3 checklist)
-│  ├─ commands/                 # 7 commands
-│  └─ plugins/                  # rtk.ts + serena-reminder.ts (v2-native)
-├─ skills/                  # 18 skills → cài vào ~/Documents/21.AgentSkills
-├─ vault-template/          # skeleton vault → new-vault.sh copy ra ~/Documents
-├─ snippets/                # zsh-ws.zsh — helper git đa repo (lgall/wsst)
-└─ scripts/                 # bootstrap-macos.sh · capture.sh · new-vault.sh · verify.sh
+├─ docs/
+│  ├─ 00…07                # hướng dẫn setup + quy ước
+│  └─ examples/            # VÍ DỤ THAM CHIẾU — để đọc, không để cài
+│     ├─ opencode.jsonc
+│     └─ opencode/         # agents/ commands/ plugins/ references/ cli.json package.json AGENTS.md
+├─ skills/                 # 18 skill — bản generic, không gắn dự án
+├─ vault-template/         # skeleton vault → new-vault.sh copy ra ngoài
+├─ snippets/               # zsh-ws.zsh — helper git đa repo (lgall/wsst)
+└─ scripts/                # new-vault.sh
 ```
 
-## Quyết định thiết kế quan trọng
+## Nguyên tắc thiết kế
 
-- **v2-native 100%** — không copy config v1; không dựa vào migrate tự động của client.
-- **`codemode: false`** cho cả 5 MCP server — giữ tools native (`serena_*`, `obsidian_*`) như v1; plugin serena-reminder + agents hoạt động đúng. Lý do chi tiết: [docs/03 §Code Mode](docs/03-opencode-config.md).
-- **Headroom chỉ daemon/proxy** — không để headroom ghi config opencode (nó ghi format v1). Xem [docs/02](docs/02-headroom.md).
-- **rtk instructions là tùy chọn** — opencode v2 không tự thêm block hướng dẫn rtk vào AGENTS.md; snippet có trong [docs/02 §4](docs/02-headroom.md).
-- **Không secret trong repo** — config dùng `{env:VAR}`; giá trị ở `~/.secrets/opencode.env`.
-- **Bootstrap luôn backup** — config cũ rename thành `~/.config/opencode.backup-<timestamp>`; skills path có dữ liệu được backup-copy `<skills-path>.backup-<timestamp>` trước khi merge.
-- **Git repo local-only cho config/skills/vault** — bootstrap (config/skills) + `new-vault.sh` (vault) tự `git init` + commit đầu; **không** cấu hình remote (muốn backup thì tự thêm remote private).
-- **Git đa repo: tmux + lazygit** — session `repos`, mỗi repo 1 window chạy lazygit; snippet `snippets/zsh-ws.zsh` (`lgall`/`wsst`) copy vào `~/.zshrc`; opencode chạy riêng.
-- **Model refs**: kit pin `opencode-go/deepseek-v4.1-flash` (OpenCode Go subscription). Nếu dùng provider khác → **remap model refs là bắt buộc** (xem [docs/04](docs/04-secrets.md) §3).
+- **Kit là chuẩn, không phải bản sao của một máy.** Sửa skill/agent/template là sửa trong repo này; máy đọc lại từ đây.
+- **Không ship config cho một phiên bản opencode.** Kit cam kết mọi phiên bản: nó nói *cần khối nào* và *kiểm ra sao*, hình dạng cụ thể nằm ở `docs/examples/`. Không pin version, không kiểm version.
+- **Không script cài đặt.** Máy mới đi theo docs; mỗi lệnh kèm bước kiểm ngay sau (`--version`, `--help`), lệnh fail thì đọc docs upstream của tool chứ không đoán. Script cứng chết lặng lẽ khi tool đổi cách cài; docs thì sửa một dòng.
+- **Skill dùng chung phải generic.** Đường dẫn repo, ví dụ riêng của dự án thuộc tài liệu của dự án đó (`AGENTS.md`), không nằm trong skill của kit.
+- **Không secret trong repo** — dùng `{env:VAR}` / `{file:path}`, giá trị để ở `~/.secrets/`.
+- **`docs/examples/` chỉ để đọc.** Không copy vào máy rồi quên: config của bạn là của bạn.
 
 ## Docs
 
 | File | Nội dung |
 |---|---|
 | [docs/00-workspace-conventions.md](docs/00-workspace-conventions.md) | Quy ước workspace: repo layout, worktree, tài liệu, vault |
-| [docs/01-base-install.md](docs/01-base-install.md) | Cài base tools + opencode v2 |
+| [docs/01-base-install.md](docs/01-base-install.md) | Workspace cần gì · base tools · opencode |
 | [docs/02-headroom.md](docs/02-headroom.md) | Headroom daemon + rtk + snippet rtk-instructions |
-| [docs/03-opencode-config.md](docs/03-opencode-config.md) | Giải thích config v2 + variants + Code Mode |
+| [docs/03-opencode-config.md](docs/03-opencode-config.md) | Config cần khối nào, vì sao, kiểm ra sao |
 | [docs/04-secrets.md](docs/04-secrets.md) | Secrets + account connect |
 | [docs/05-vault-setup.md](docs/05-vault-setup.md) | Obsidian + 5 plugins + MCP |
 | [docs/06-troubleshooting.md](docs/06-troubleshooting.md) | Log paths, rollback, lỗi thường gặp |

@@ -1,7 +1,7 @@
 # 02 — Headroom + rtk
 
 > Headroom = proxy tiết kiệm token (compress tool output) + MCP retrieve.
-> Trên máy này headroom **chỉ chạy daemon/proxy** — config opencode do ws-kit cung cấp (v2-native).
+> Headroom **chỉ chạy daemon/proxy**. Không để nó ghi config opencode (nó ghi dạng cũ) — config do bạn viết, xem `docs/03`.
 
 ---
 
@@ -40,7 +40,7 @@ Headroom hiện viết config opencode theo **format V1** (`mcp.<tên>` + `"enab
 - ❌ `headroom wrap opencode` (ngoài việc ghi config v1, còn inject block rtk — xem §4)
 
 > Nếu sau này chạy lệnh headroom có ghi config → kiểm tra lại: `grep '"enabled"\|@ai-sdk' ~/.config/opencode/opencode.jsonc`
-> Thứ tự đúng: **P3 (headroom) TRƯỚC P4 (bootstrap)** — bootstrap phủ config v2-native sạch.
+> Thứ tự đúng: **P3 (headroom) TRƯỚC khi viết config** — config trỏ provider `headroom` ở `http://127.0.0.1:8787/v1`.
 
 ## 4. rtk instructions (TÙY CHỌN — thêm riêng)
 
@@ -102,4 +102,4 @@ which rtk || brew install rtk
 rtk --version
 ```
 
-Plugin `opencode/plugins/rtk.ts` (được bootstrap cài vào `~/.config/opencode/plugins/`) sẽ tự load — rewrite mọi shell command qua `rtk rewrite`.
+Plugin `rtk.ts` (trong `docs/examples/opencode/plugins/`) tự load khi đặt vào thư mục plugin của client — rewrite mọi shell command qua `rtk rewrite`.

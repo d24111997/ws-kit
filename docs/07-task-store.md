@@ -25,7 +25,7 @@ Xác thực: bearer key **theo máy**. Store chỉ giữ `sha256` của key; key
 
 ## 3. Khai trong config
 
-Block nằm trong `opencode/opencode.template.jsonc` §`mcp.servers`:
+Hình dạng block (ví dụ tham chiếu trong `docs/examples/opencode.jsonc`, §`mcp.servers`):
 
 ```jsonc
 "tms": {

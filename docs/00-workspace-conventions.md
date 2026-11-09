@@ -10,8 +10,8 @@
 - Mỗi repo là một git repo độc lập, có `AGENTS.md` riêng ở root.
 - Vault (Obsidian) nằm riêng ở `~/Documents/<Tên-vault>/`.
 - **Git repo local-only** (không remote — sinh tự động khi setup):
-  - `~/.config/opencode` — config (bootstrap `git init` + commit đầu)
-  - `<skills-path>` (mặc định `~/Documents/21.AgentSkills`) — skills (bootstrap `git init`)
+  - `~/.config/opencode` — config (`git init` + commit đầu)
+  - `<skills-path>` — skills (`git init`, nếu bạn giữ bản riêng)
   - `~/Documents/<Tên-vault>` — vault (`new-vault.sh` tự `git init`)
   - Muốn backup → tự thêm remote private (không bắt buộc).
 

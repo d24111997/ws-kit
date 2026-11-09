@@ -59,7 +59,7 @@ Một số provider đến từ **subscription account** chứ không phải API
 
 - Trong opencode: `/connect` → chọn provider (vd **OpenCode Go**) → làm theo hướng dẫn.
 - Các agents trong kit pin model `opencode-go/deepseek-v4.1-flash` + variants.
-  - Nếu bạn dùng **provider khác**: remap `model:` trong `opencode/agents/*.md` (và `model` gốc trong config) sang provider/model của bạn. Variants cần được định nghĩa lại tương ứng trong `providers`.
+  - Nếu bạn dùng **provider khác**: remap `model:` ở frontmatter từng agent (và `model` gốc trong config) sang provider/model của bạn. Variants cần được định nghĩa lại tương ứng trong `providers`.
 
 ## 4. Nguyên tắc
 

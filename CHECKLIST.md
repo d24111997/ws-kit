@@ -1,84 +1,83 @@
-# CHECKLIST — sau khi cài đặt
+# CHECKLIST — workspace đã đủ chưa
 
-> Tick từng mục sau khi chạy P0→P8 (README). Chạy `./scripts/verify.sh` để check tự động phần lớn các mục.
+> Danh sách thành phần của một workspace chuẩn. Mỗi dòng ghi **cách tự kiểm**, không ghi kết quả mong đợi của một phiên bản cụ thể.
+> Dùng lúc dựng máy mới, và khi nghi có gì đó thiếu. Agent ở máy mới đọc file này để tự đối chiếu.
 
-## P0–P2 — Base + opencode
+## Tool ngoài
 
-- [ ] `brew --version` OK; `git config --global user.name/user.email` đã set
-- [ ] `gh auth status` → logged in
-- [ ] `opencode --version` → `2.0.x` (v2)
-- [ ] `opencode debug paths` chạy được (thấy config/data/log paths)
-- [ ] (Khuyến nghị) `tmux` + `lazygit` đã cài — git workflow đa repo (docs/00 §7)
+- [ ] `brew --version` → in ra được version
+- [ ] `git config --global user.name` và `user.email` → có giá trị
+- [ ] `gh auth status` → đang đăng nhập
+- [ ] `uv --version` · `pnpm --version` · `node --version` → in ra được version
+- [ ] `gitleaks version` → in ra được version
+- [ ] (tuỳ chọn) `jq --version` · `tmux -V` · `lazygit --version` · `which headroom` · `rtk --version`
 
-## P3 — headroom + rtk
+## opencode + headroom
 
-- [ ] `headroom doctor` → OK
-- [ ] `headroom install status` → profile default, port 8787
-- [ ] `curl -s http://127.0.0.1:8787/health` → phản hồi
-- [ ] `rtk --version` OK
-- [ ] Đã **KHÔNG** chạy `headroom mcp install` / `--scope provider` / `wrap opencode`
+- [ ] `opencode --version` → in ra được version
+- [ ] `opencode debug paths` → in ra config/data/log paths
+- [ ] `headroom doctor` → đọc **dòng tổng kết** (`N failure(s)`), không đọc exit code
+- [ ] `curl -s http://127.0.0.1:8787/health` → có phản hồi
+- [ ] Chưa từng chạy `headroom mcp install` / `--scope provider` / `wrap opencode` (chúng ghi config sai dạng)
 
-## P4 — config + skills
+## Config
 
-- [ ] `~/.config/opencode/opencode.jsonc` tồn tại (từ kit)
-- [ ] Config không lẫn key v1: `grep '"enabled"\|@ai-sdk' ~/.config/opencode/opencode.jsonc` → rỗng
-- [ ] `ls ~/.config/opencode/agents` → 11 file (+ references/)
-- [ ] `ls ~/.config/opencode/commands` → 7 file
-- [ ] `ls ~/.config/opencode/plugins` → `rtk.ts`, `serena-reminder.ts`
-- [ ] `ls ~/Documents/21.AgentSkills` → 18 skill
-- [ ] `~/.config/opencode/node_modules/@opencode/plugin` tồn tại (npm install OK)
-- [ ] Config + skills đã được init git repo local (bootstrap) — `git -C ~/.config/opencode log` có commit đầu
+Cần có: `opencode.jsonc` ở chỗ opencode đọc. Không có bản mẫu để copy — hình dạng xem `docs/examples/opencode.jsonc`.
 
-## P5 — secrets
+- [ ] File config tồn tại; `opencode` khởi động không báo lỗi parse
+- [ ] Có khối providers, khớp provider/model bạn thật sự dùng
+- [ ] Có khối MCP servers — hoặc đã cố ý bỏ
+- [ ] Có permissions (tối thiểu chặn `git push`)
+- [ ] `skills` trỏ đúng thư mục skill
+- [ ] Không có secret trong file (`grep -i "sk-\|ghp_\|api_key" opencode.jsonc` → không có giá trị thật)
 
-- [ ] `~/.secrets/opencode.env` tồn tại + `chmod 600`
-- [ ] `~/.zshenv` có dòng source file trên
-- [ ] Shell mới: `echo $OPENROUTER_API_KEY` → có giá trị
-- [ ] Đã `/connect` account (vd OpenCode Go) — hoặc đã **remap model refs** trong `opencode/agents/*.md` + config nếu dùng provider khác (xem docs/04 §3)
+## Thành phần agent
 
-## P6 — vault + MCP obsidian
+- [ ] Thư mục `agents/` có file agent + `references/` nếu dùng
+- [ ] Thư mục `commands/` có slash command bạn cần
+- [ ] Thư mục `plugins/` có plugin + deps đã cài (`npm install` trong thư mục plugin)
+- [ ] `AGENTS.md` cho LLM (global) tồn tại nếu bạn dùng
+- [ ] `opencode plugin list` → thấy plugin bạn cài
+- [ ] Trong opencode: gọi một agent → agent trả lời, không báo thiếu model
 
-- [ ] Vault tạo bằng `new-vault.sh` + `git log` có commit đầu
+## Skills
+
+- [ ] `skills` trong config trỏ tới đúng thư mục (clone kit, hoặc thư mục riêng của bạn)
+- [ ] Trong opencode: skill hiện trong danh sách skill khả dụng
+- [ ] Chạy thử một skill (`/plan-custom`, `/discuss-task`) → chạy được
+
+## Secrets + account
+
+- [ ] File secrets tồn tại + `chmod 600` (mặc định `~/.secrets/opencode.env`)
+- [ ] `~/.zshenv` source file đó (nếu bạn dùng env var)
+- [ ] Shell mới: `echo $OPENROUTER_API_KEY` → có giá trị (hoặc biến bạn dùng)
+- [ ] Key dạng file (`{file:...}`) tồn tại + `chmod 600`
+- [ ] Đã `/connect` account nếu provider đến từ subscription
+
+## Vault (Obsidian)
+
+- [ ] Vault tạo từ `./scripts/new-vault.sh "<Tên vault>"`; `git -C <vault> log` có commit đầu
 - [ ] Obsidian mở được vault (Open folder as vault)
-- [ ] 5 community plugins đã cài + bật: local-rest-api, markitdown, dataview, templater, meta-bind
-- [ ] Local REST API bật, port 27123, key đã thêm vào `~/.secrets/opencode.env`
-- [ ] `git status --short` trong vault: **KHÔNG** thấy `.obsidian/plugins/*/data.json` / `workspace.json` trước khi commit
-- [ ] MCP obsidian đọc/ghi thử 1 note OK
+- [ ] 5 community plugins cài + bật: local-rest-api · markitdown · dataview · templater · meta-bind
+- [ ] Local REST API bật, port 27123; key đã vào chỗ cấu hình dùng
+- [ ] `.obsidian/plugins/*/data.json` và `workspace.json` không bị commit
+- [ ] MCP obsidian đọc/ghi thử một note
 
-## P6b — task store (tuỳ chọn)
+## Task store (tuỳ chọn)
 
-> Chỉ làm khi bạn có một instance TMS thật. Không có → bỏ block `tms` trong config và bỏ 3 skill `discuss-*`. Xem `docs/07-task-store.md`.
+> Chỉ khi bạn có một instance TMS thật. Không có → đừng khai block `tms`, và bỏ 3 skill `discuss-*` vì chúng gọi `task_get`/`decision_record`.
 
-- [ ] `~/.secrets/tms-api-key` tồn tại + `chmod 600`
-- [ ] `opencode/opencode.template.jsonc` (hoặc config đã cài): `url` trỏ đúng `<tms-host>/write/mcp`, không có tiền tố `/read/`
-- [ ] Gọi thử 1 tool đọc (`task_list`) → trả danh sách, không `401`
-- [ ] `401` → kiểm key + `tmsd key list` còn hiệu lực; `404` → sai đường, đọc ở `/sse` ghi ở `/write/mcp`
-
-## P7 — verify
-
-- [ ] `./scripts/verify.sh --vault ~/Documents/"<Tên vault>"` → không có FAIL
-- [ ] `opencode mcp list` → obsidian / serena / headroom connected (+ `tms` nếu có instance) (chrome-devtools: cần Chrome)
-- [ ] `opencode plugin list` → thấy rtk + serena-reminder
-- [ ] TUI hiển thị TPS (oc-tps hoạt động)
-
-## P8 — first run
-
-- [ ] Mở opencode trong 1 repo → agents load (thấy jack + subagents)
-- [ ] Chạy thử `/plan-custom` → OK
-- [ ] (Optional) Thêm block rtk-instructions vào `~/.config/opencode/AGENTS.md` — snippet tại `docs/02-headroom.md §4`
-
-## Giữ kit đồng bộ (định kỳ)
-
-- [ ] Sau khi sửa agent/skill trên máy: `./scripts/capture.sh` (dry-run) → `--apply`
-- [ ] Review `git diff --stat` trong kit rồi commit — không để drift 2 tháng
-- [ ] Skill cá nhân không muốn lên kit: thêm tên vào `.kitignore`
+- [ ] File key (`~/.secrets/tms-api-key`) tồn tại + `chmod 600`
+- [ ] `url` trong block `tms` trỏ `<tms-host>/write/mcp` — không có tiền tố `/read/`
+- [ ] Gọi thử `task_list` → trả danh sách, không `401`
+- [ ] `401` → kiểm key + còn hiệu lực phía server; `404` → sai đường (ghi ở `/write/mcp`, đọc ở `/sse`)
 
 ## Git workflow đa repo (khuyến nghị)
 
 - [ ] Đã copy `snippets/zsh-ws.zsh` vào `~/.zshrc` + sửa `WS_REPOS`
-- [ ] `lgall` mở tmux session (lazygit từng repo); `wsst` chạy OK
+- [ ] `lgall` mở tmux session; `wsst` chạy được
 
 ## Ghi chú vận hành
 
-- [ ] Backup config cũ nằm ở `~/.config/opencode.backup-<timestamp>/` — giữ đến khi chắc chắn mọi thứ OK
-- [ ] Chưa từng commit secret: `gitleaks detect --no-banner` trong bất kỳ repo config nào
+- [ ] Backup config cũ (nếu có) giữ đến khi chắc mọi thứ OK
+- [ ] Chưa từng commit secret: `gitleaks detect --no-banner` trong repo config/vault
