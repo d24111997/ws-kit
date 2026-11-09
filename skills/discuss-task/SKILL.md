@@ -20,7 +20,7 @@ description: Thảo luận có cấu trúc gắn với task của workspace — 
 
 Đọc theo thứ tự, dừng khi đủ:
 
-1. Task `T-<n>` **từ store TMS**: `task_get(ref: "T-<n>", sections: ["Mục tiêu", "Phạm vi", "Chủ đề còn mở"])` — trả đúng các mục đó và **không** kéo `body_md`; và `decision_list(ref: "T-<n>")` cho các quyết định đã ban hành (`offset`/`limit`, mặc định 20 — task nhiều quyết định thì đọc theo trang). Không đọc `05-mvp/tasks/*.md` — 35 file đó chỉ còn giá trị lịch sử, có banner, không sửa.
+1. Task `T-<n>` **từ store TMS**: `task_get(ref: "T-<n>", sections: ["Mục tiêu", "Phạm vi", "Chủ đề còn mở"])` — trả đúng các mục đó và **không** kéo `body_md`; và `decision_list(ref: "T-<n>")` cho các quyết định đã ban hành (`offset`/`limit`, mặc định 20 — task nhiều quyết định thì đọc theo trang). Dự án còn giữ file task kiểu cũ (vị trí ghi ở `AGENTS.md` của repo) thì coi là lịch sử: không đọc, không sửa.
 2. `DISCUSS_TEMPLATE.md` — khung file và checklist đóng cuộc.
 3. Chỉ những tư liệu task liệt kê, và chỉ phần cần cho chủ đề đang hỏi.
 

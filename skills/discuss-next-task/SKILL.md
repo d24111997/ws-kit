@@ -15,7 +15,7 @@ Người làm đã trả lời trong file thảo luận và chọn mở file ti�
 
 - Đọc `discuss-task` để lấy luật chung (Nguyên tắc · Bước 3 · Bước 4 · Không được).
 - Đọc **toàn bộ** file thảo luận trước; không grep `=>` thay cho việc đọc.
-- Đọc task **từ store**: `task_get(ref, sections: ["Mục tiêu", "Phạm vi", "Chủ đề còn mở"])` — không kéo `body_md`; `decision_list(ref)` đọc theo trang (`offset`/`limit`, mặc định 20). Không đọc `05-mvp/tasks/*.md`.
+- Đọc task **từ store**: `task_get(ref, sections: ["Mục tiêu", "Phạm vi", "Chủ đề còn mở"])` — không kéo `body_md`; `decision_list(ref)` đọc theo trang (`offset`/`limit`, mặc định 20). Không đọc file task kiểu cũ (nếu dự án còn giữ) — vị trí ghi ở `AGENTS.md` của repo.
 
 ## Bước 2 — Phân loại phản hồi và ghi quyết định về task
 
