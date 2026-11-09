@@ -20,7 +20,7 @@ description: Thảo luận có cấu trúc gắn với task của workspace — 
 
 Đọc theo thứ tự, dừng khi đủ:
 
-1. Task `T-<n>` **từ store TMS**: `task_get(ref: "T-<n>")` cho mục tiêu · phạm vi · trạng thái · phụ thuộc · chủ đề còn mở (trong `body_md`) và `decision_list(ref: "T-<n>")` cho các quyết định đã ban hành. Không đọc `05-mvp/tasks/*.md` — 35 file đó chỉ còn giá trị lịch sử, có banner, không sửa.
+1. Task `T-<n>` **từ store TMS**: `task_get` cho các mục cần (mục tiêu · phạm vi · chủ đề còn mở) — đọc theo mục, không kéo cả thân task; `decision_list` cho quyết định đã ban hành, đọc theo trang khi task nhiều quyết định.
 2. `DISCUSS_TEMPLATE.md` — khung file và checklist đóng cuộc.
 3. Chỉ những tư liệu task liệt kê, và chỉ phần cần cho chủ đề đang hỏi.
 
@@ -35,7 +35,7 @@ Task chưa có trong store → dừng và báo người làm; không tự tạo 
 | Người làm chọn mở file mới | Tạo `discuss-<N+1>-t<n>.md`, mở đầu bằng **Nối tiếp**: phản hồi đã nhận · `T-n/D-k` đã khoá · chỗ còn treo · lý do mở file |
 | Không rõ ý người làm | Hỏi đúng một câu: tiếp file này hay mở file mới |
 
-Skill **không** tự quyết chỗ ghi; hai đường vào là `discuss-continue-task` (tiếp file đang mở) và `discuss-next-task` (mở file mới). File thảo luận tự khai `**Task:** T-<n>`; dòng `## Thảo luận` nằm trong `body_md` của task và chỉ trỏ folder — **không sửa task** khi mở cuộc.
+Skill **không** tự quyết chỗ ghi; hai đường vào là `discuss-continue-task` (tiếp file đang mở) và `discuss-next-task` (mở file mới). File thảo luận tự khai `**Task:** T-<n>`; mục `Thảo luận` của task chỉ trỏ folder — **không sửa task** khi mở cuộc.
 
 ## Bước 3 — Viết câu hỏi theo cụm
 
@@ -65,13 +65,13 @@ Không suy diễn phương án khi người làm chỉ nhận xét.
 
 ## Bước 5 — Khoá cụm, ghi về task, đồng bộ chủ đề
 
-- **Chủ đề mới**: cuộc mở ra một điểm chưa rõ chưa có trong mục `Chủ đề còn mở` → thêm **một dòng chủ đề** (bằng lời; không câu hỏi, không link tới file thảo luận) ngay khi mở cụm, bằng `task_update(ref: "T-<n>", patch: { body_md })` với **toàn bộ** `body_md` đã cập nhật.
-- **Chủ đề đã rõ** thì rút khỏi mục `Chủ đề còn mở` — cũng bằng `task_update(patch: { body_md })`; dấu vết nằm ở `D-<k>` và ở file thảo luận.
+- **Chủ đề mới**: cuộc mở ra một điểm chưa rõ chưa có trong mục `Chủ đề còn mở` → thêm **một dòng chủ đề** (bằng lời; không câu hỏi, không link tới file thảo luận) ngay khi mở cụm, ghi bằng `task_update` trên đúng mục đó — không gửi lại cả thân task.
+- **Chủ đề đã rõ** thì rút khỏi mục `Chủ đề còn mở` — cũng bằng `task_update`, xoá đúng nguyên văn dòng cũ (dòng không khớp hoặc khớp nhiều dòng là lỗi); dấu vết nằm ở `D-<k>` và ở file thảo luận.
 - **Câu hỏi** ở lại trong cụm của file thảo luận — không chép câu hỏi vào task.
 
-- Khoá cụm → gọi **ngay** `decision_record(ref: "T-<n>", text: "<một câu thi hành được>", source: "discuss-<N> Q<x.y>")`. Store cấp `D-<n>` (max+1), không đánh tay, không dùng lại số; tool trả `{ n, ref: "T-<n>/D-<k>" }` — ghi đúng `ref` đó vào file thảo luận.
+- Khoá cụm → gọi **ngay** `decision_record` với một câu thi hành được, nguồn là cụm câu hỏi trong file thảo luận. Store cấp `D-<n>`, không đánh tay, không dùng lại số; ghi vào file thảo luận đúng `ref` store trả về.
 - File thảo luận **chỉ trỏ** `T-<n>/D-<k>`, không chép nội dung quyết định (không có cột "Giá trị").
-- Không tự đổi `status` của task; chỉ gọi `task_update(patch: { status })` hoặc `{ status_note }` khi người làm bảo.
+- Không tự đổi `status` của task; chỉ gọi `task_update` khi người làm bảo.
 
 ## Bước 6 — Đóng cuộc
 
@@ -89,7 +89,7 @@ Chỉ đóng khi checklist `DISCUSS_TEMPLATE.md` §4 đủ:
 ## Không được
 
 - Thay việc đọc toàn bộ file thảo luận bằng grep `=>` hoặc trích dòng.
-- Tạo plan, sửa code, hoặc gọi `task_update` với trường ngoài `body_md`/`status`/`status_note` khi người làm chưa bảo.
+- Tạo plan, sửa code, hoặc gọi `task_update` ngoài ba việc: trạng thái · ghi chú trạng thái · nội dung task — khi người làm chưa bảo.
 - Tự đổi `status`, tự đóng task, tự đóng câu hỏi.
 - Tự tạo task con hoặc task mới.
 - Ghi quyết định chỉ trong file thảo luận mà không gọi `decision_record`.

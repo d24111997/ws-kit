@@ -10,7 +10,7 @@ Viết file handover cho session hiện tại theo đúng template vault.
 
 2. **Xác định folder handover:**
    - Mặc định: folder `docs/handover/` trong repo hiện tại (working directory).
-   - Nếu `$ARGUMENTS` có chỉ định project/path (vd "prj 12", "12.<repo>", hoặc đường dẫn cụ thể) → dùng folder handover của project đó.
+   - Nếu `$ARGUMENTS` có chỉ định project/path (vd `prj <số>`, `12.<repo>`, hoặc đường dẫn cụ thể) → dùng folder handover của project đó.
    - Nếu folder không tồn tại → tạo mới `docs/handover/` (hoặc hỏi user nếu không chắc).
 
 3. **Xác định số handover kế tiếp:** liệt kê files trong folder handover, tìm số lớn nhất (`HANDOVER_N_*.md`) → file mới là `N+1`. Ngày lấy hôm nay (YYYY-MM-DD).
