@@ -11,6 +11,10 @@ import { execFile } from "node:child_process"
 const REWRITE_TIMEOUT_MS = 10_000
 
 function run(cmd: string, args: string[]): Promise<{ ok: boolean; stdout: string }> {
+  // Exit code is not a success signal for every subcommand: `rtk rewrite` exits 3
+  // when it DID rewrite a command (see its changelog, e.g. "handle exit code 3"),
+  // and exits 1 with empty stdout when the command has no rtk equivalent.
+  // Callers decide by stdout, not by exit code.
   return new Promise((resolve) => {
     execFile(cmd, args, { timeout: REWRITE_TIMEOUT_MS }, (error, stdout) => {
       resolve({ ok: !error, stdout: String(stdout ?? "") })
@@ -34,12 +38,11 @@ export default Plugin.define({
       if (typeof command !== "string" || !command) return
 
       const result = await run("rtk", ["rewrite", command])
-      if (!result.ok) return // rtk rewrite failed — pass through unchanged
-
+      // Decide by stdout: exit 3 = rewritten, exit 1 + empty stdout = no equivalent.
       const rewritten = result.stdout.trim()
-      if (rewritten && rewritten !== command) {
-        event.command = rewritten
-      }
+      if (!rewritten || rewritten === command) return
+
+      event.command = rewritten
     })
   },
 })
