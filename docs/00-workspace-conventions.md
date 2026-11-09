@@ -62,6 +62,10 @@ Mỗi repo có bộ tài liệu riêng:
 5. **Verify** — full test suite + lint + build.
 6. **Handover** — `docs/handover/HANDOVER_N_*.md` khi kết thúc session.
 
+- Trạng thái task và quyết định nằm trong **task store** (MCP `tms`) khi workspace có instance;
+  thảo luận và plan vẫn là file md trong git — xem `docs/07-task-store.md`.
+- Không có instance → quy trình chạy bằng file như cũ: bỏ block `tms` và ba skill `discuss-*`.
+
 > Các bước trên được hỗ trợ bởi bộ agents/commands/skills trong `ws-kit` (jack, planner, developer, ... — xem `docs/03-opencode-config.md`).
 
 ---
