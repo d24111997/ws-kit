@@ -17,7 +17,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: pattern guard (project-leak refs)
         run: |
-          PATTERN='ECG|Inngo|Anijob|AJJOB|cv_extract|fe_ops|fe_cv|dungpham|10\.Util_Scripts|prj [0-9]'
+          # Danh sách từ khoá để dạng base64: nếu viết nguyên văn, chính file này chứa
+          # chuỗi cần chặn nên sẽ tự khớp và job fail trên mọi nhánh (self-match).
+          # Giải mã để giữ nguyên hành vi quét toàn bộ repo, không loại trừ file nào.
+          PATTERN=$(printf '%s' 'RUNHfElubmdvfEFuaWpvYnxBSkpPQnxjdl9leHRyYWN0fGZlX29wc3xmZV9jdnxkdW5ncGhhbXwxMFwuVXRpbF9TY3JpcHRzfHByaiBbMC05XQ==' | base64 -d)
           if grep -rInE "$PATTERN" --exclude-dir=.git . ; then
             echo "::error::Forbidden leak pattern found in repo"; exit 1
           else
