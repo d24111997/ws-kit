@@ -45,10 +45,19 @@
 - [ ] `git status --short` trong vault: **KHÔNG** thấy `.obsidian/plugins/*/data.json` / `workspace.json` trước khi commit
 - [ ] MCP obsidian đọc/ghi thử 1 note OK
 
+## P6b — task store (tuỳ chọn)
+
+> Chỉ làm khi bạn có một instance TMS thật. Không có → bỏ block `tms` trong config và bỏ 3 skill `discuss-*`. Xem `docs/07-task-store.md`.
+
+- [ ] `~/.secrets/tms-api-key` tồn tại + `chmod 600`
+- [ ] `opencode/opencode.template.jsonc` (hoặc config đã cài): `url` trỏ đúng `<tms-host>/write/mcp`, không có tiền tố `/read/`
+- [ ] Gọi thử 1 tool đọc (`task_list`) → trả danh sách, không `401`
+- [ ] `401` → kiểm key + `tmsd key list` còn hiệu lực; `404` → sai đường, đọc ở `/sse` ghi ở `/write/mcp`
+
 ## P7 — verify
 
 - [ ] `./scripts/verify.sh --vault ~/Documents/"<Tên vault>"` → không có FAIL
-- [ ] `opencode mcp list` → obsidian / serena / headroom connected (chrome-devtools: cần Chrome)
+- [ ] `opencode mcp list` → obsidian / serena / headroom connected (+ `tms` nếu có instance) (chrome-devtools: cần Chrome)
 - [ ] `opencode plugin list` → thấy rtk + serena-reminder
 - [ ] TUI hiển thị TPS (oc-tps hoạt động)
 

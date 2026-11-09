@@ -86,7 +86,7 @@ if command -v opencode >/dev/null 2>&1; then
     warn "không đọc được danh sách MCP (service đang khởi động?) — bỏ check MCP, xem lại: opencode mcp list"
     MCP="SKIP_NO_LIST"
   fi
-  for s in obsidian serena headroom chrome-devtools; do
+  for s in obsidian serena headroom chrome-devtools tms; do
     [ "$MCP" = "SKIP_NO_LIST" ] && break
     MCPLINE="$(printf '%s\n' "$MCP" | grep -E " +$s +" | head -1)"
     if printf '%s' "$MCPLINE" | grep -qi "connected"; then
@@ -95,6 +95,10 @@ if command -v opencode >/dev/null 2>&1; then
       warn "mcp: chrome-devtools chưa kết nối (cần Google Chrome đã cài)"
     elif [ "$s" = "obsidian" ]; then
       warn "mcp: obsidian không bật — kit không dùng (agent đọc vault bằng filesystem)"
+    elif [ "$s" = "tms" ] && [ -z "$MCPLINE" ]; then
+      warn "mcp: tms không khai trong config — bỏ qua (task store tuỳ chọn, docs/07)"
+    elif [ "$s" = "tms" ]; then
+      warn "mcp: tms chưa kết nối (kiểm key + url — docs/07 §5)"
     else
       bad "mcp: $s chưa kết nối (xem: opencode mcp list)"
     fi

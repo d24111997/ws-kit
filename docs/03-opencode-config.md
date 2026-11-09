@@ -72,8 +72,10 @@ v2 dùng **mảng rule** `{action, resource, effect}`, last-match-wins; `bash` �
 ```
 
 - `enabled: true` (v1) → bỏ field; muốn tắt → `disabled: true`.
-- `{env:VAR}` dùng được trong `environment`/`headers`.
-- 4 server trong kit: `obsidian` (npx obsidian-mcp-server + env), `chrome-devtools` (npx + autoConnect), `headroom` (PATH-based), `serena` (uvx + `--open-web-dashboard False`).
+- `{env:VAR}` dùng được trong `environment`/`headers`; `{file:path}` dùng được cùng chỗ — kit dùng `{file:}` cho key vì service có thể spawn không có env (docs/04 §2).
+- 5 server trong kit: `tms` (remote HTTPS + `Authorization` từ `~/.secrets/tms-api-key`), `obsidian` (npx obsidian-mcp-server + env), `chrome-devtools` (npx + autoConnect), `headroom` (PATH-based), `serena` (uvx + `--open-web-dashboard False`).
+- `tms` là server duy nhất cần **một instance thật** phía server: kit ship hình dạng config, không ship task store. Không có instance → để `disabled: true` hoặc bỏ block, và bỏ 3 skill `discuss-*` khỏi `21.AgentSkills` (chúng gọi `task_get`/`decision_record`). Xem `docs/07-task-store.md`.
+- Đường ghi và đường đọc là hai endpoint khác nhau: ghi ở `/write/mcp` (bearer key), đọc SQL thô ở `/sse` + `/messages/`. Đừng thêm tiền tố `/read/` — sẽ `404`.
 
 ## 3. Model variants (reasoning + temperature)
 

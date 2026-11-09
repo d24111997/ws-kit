@@ -11,6 +11,7 @@
 | `OPENROUTER_API_KEY` | provider `openrouter` | openrouter.ai → Keys |
 | `COMMANDCODE_API_KEY` | provider `commandcode` | commandcode.ai dashboard |
 | `OBSIDIAN_API_KEY` | MCP `obsidian` | Obsidian → Local REST API plugin (tạo mới, xem `docs/05-vault-setup.md`) |
+| `TMS_API_KEY` | MCP `tms` (task store) | Instance TMS → `tmsd key create --label <tên-máy>` (xem `docs/07-task-store.md`) |
 
 ## 2. Tạo file secrets
 
@@ -33,6 +34,13 @@ Sau khi lấy key từ plugin Local REST API (docs/05 §5), tạo thêm file key
 ```bash
 printf '%s' "<key>" > ~/.secrets/obsidian-api-key
 chmod 600 ~/.secrets/obsidian-api-key
+```
+
+Key của task store MCP (`tms`) đi theo cùng đường — file riêng, không qua env:
+
+```bash
+printf '%s' "<key>" > ~/.secrets/tms-api-key
+chmod 600 ~/.secrets/tms-api-key
 ```
 
 **Vì sao cần file riêng:** `{env:...}` chỉ resolve từ env của **process opencode service** — service có thể được macOS spawn với env mặc định (không source `~/.zshenv`), khiến MCP server nhận key rỗng và fail `Connection closed` dù shell của bạn có biến. Config kit vì vậy dùng `{file:~/.secrets/obsidian-api-key}` cho MCP obsidian.

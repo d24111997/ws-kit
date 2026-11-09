@@ -1,5 +1,9 @@
 # .kitignore — skill KHÔNG đồng bộ từ ~/Documents/21.AgentSkills lên kit.
 # Mỗi dòng một tên thư mục skill (glob của rsync). Dòng bắt đầu bằng # là comment.
-# Dùng cho skill cá nhân / thử nghiệm, không thuộc bộ dùng chung.
+# Dùng cho skill cá nhân / thử nghiệm, và skill mà bản ở máy gắn với dự án cụ thể
+# trong khi kit ship bản generic (xem README §Quyết định thiết kế).
 
 tiktok-to-youtube-sync
+# plan-custom: bản ở máy liệt kê repo thật của một dự án; kit ship bản placeholder
+# `<be-repo>/` để máy mới tự điền. Capture sẽ ghi đè mất phần generic → loại ra.
+plan-custom

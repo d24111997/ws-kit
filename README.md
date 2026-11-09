@@ -13,7 +13,7 @@
 | **Agents + Commands** | 11 agents (jack, planner, developer, impl-reviewer, code-reviewer, test-engineer, security-auditor + personas anna/bard/liuliu/rei) · 7 commands |
 | **Skills** | 18 skill tự viết (discuss-task, plan-custom, test-driven-development, ...) |
 | **Plugins** | 2 plugin v2-native: `rtk.ts` (shell rewrite tiết kiệm token) + `serena-reminder.ts` |
-| **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + tmux/lazygit (git đa repo) |
+| **Tooling** | headroom (proxy + MCP) + rtk + Chrome DevTools MCP + task store TMS (MCP remote, tuỳ chọn) + tmux/lazygit (git đa repo) |
 | **Vault skeleton** | Obsidian: taxonomy 00→12 + 7 template + test templates + 5 community plugins |
 | **Scripts** | `bootstrap-macos.sh` (kit → máy) · `capture.sh` (máy → kit, mặc định dry-run) · `new-vault.sh` · `verify.sh` |
 | **Snippets** | `zsh-ws.zsh` — helper git đa repo (lazygit + tmux: `lgall`/`wsst`) |
@@ -99,7 +99,7 @@ ws-kit/
 ## Quyết định thiết kế quan trọng
 
 - **v2-native 100%** — không copy config v1; không dựa vào migrate tự động của client.
-- **`codemode: false`** cho cả 4 MCP server — giữ tools native (`serena_*`, `obsidian_*`) như v1; plugin serena-reminder + agents hoạt động đúng. Lý do chi tiết: [docs/03 §Code Mode](docs/03-opencode-config.md).
+- **`codemode: false`** cho cả 5 MCP server — giữ tools native (`serena_*`, `obsidian_*`) như v1; plugin serena-reminder + agents hoạt động đúng. Lý do chi tiết: [docs/03 §Code Mode](docs/03-opencode-config.md).
 - **Headroom chỉ daemon/proxy** — không để headroom ghi config opencode (nó ghi format v1). Xem [docs/02](docs/02-headroom.md).
 - **rtk instructions là tùy chọn** — opencode v2 không tự thêm block hướng dẫn rtk vào AGENTS.md; snippet có trong [docs/02 §4](docs/02-headroom.md).
 - **Không secret trong repo** — config dùng `{env:VAR}`; giá trị ở `~/.secrets/opencode.env`.
@@ -119,6 +119,7 @@ ws-kit/
 | [docs/04-secrets.md](docs/04-secrets.md) | Secrets + account connect |
 | [docs/05-vault-setup.md](docs/05-vault-setup.md) | Obsidian + 5 plugins + MCP |
 | [docs/06-troubleshooting.md](docs/06-troubleshooting.md) | Log paths, rollback, lỗi thường gặp |
+| [docs/07-task-store.md](docs/07-task-store.md) | Task store qua MCP `tms` (tuỳ chọn): 6 tool · key · đường ghi/đọc · lỗi |
 
 ## License
 

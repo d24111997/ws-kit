@@ -115,6 +115,18 @@
   // Lý do + chi tiết: docs/03-opencode-config.md §Code Mode.
   "mcp": {
     "servers": {
+      "tms": {
+        // Task store (TMS) — MCP ghi qua HTTPS. Kit chỉ ship *hình dạng* config:
+        // cần một instance TMS thật, xem docs/07-task-store.md.
+        // Key không nằm trong repo và không đọc từ env (service có thể spawn
+        // không có env — xem docs/04 §2), nên đọc từ file:
+        //   printf '%s' '<key>' > ~/.secrets/tms-api-key && chmod 600 ~/.secrets/tms-api-key
+        "type": "remote",
+        "url": "https://<tms-host>/write/mcp",
+        "oauth": false,
+        "headers": { "Authorization": "Bearer {file:~/.secrets/tms-api-key}" },
+        "codemode": false
+      },
       "obsidian": {
         // Kit không dùng MCP Obsidian: agent đọc/ghi vault bằng filesystem.
         // Bật (xoá "disabled") nếu bạn vẫn muốn agent truy cập vault qua MCP.
